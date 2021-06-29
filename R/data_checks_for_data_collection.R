@@ -1,6 +1,7 @@
 # data checks
 library(tidyverse)
 library(glue)
+library(lubridate)
 library(koboAPI)
 # library(koboloadeR)
 
@@ -84,10 +85,34 @@ df_check_survey_time %>% select(starts_with("i.check"))
 # - Keep important columns to help you take them back
 # - have some kind of identifier
 
-df_check_other_responses <-  df_tool_data %>% 
-  
+# get questions with other
+others_colnames <-  df_tool_data %>% 
+  select(
+    ends_with("_other")
+  ) %>% colnames()
+
+# data.frame for holding _other response data
+df_other_response_data <- data.frame()
+
+for (cln in others_colnames) {
+  df_filtered_data <- df_tool_data %>% 
+    select("_uuid", "today", "enumerator_id", current_value = cln) %>% 
+    filter(!is.na(current_value)) %>% 
+    mutate( name = cln)
+  df_other_response_data <- rbind(df_other_response_data, df_filtered_data)
+}
+# arrange the data
+df_data_arranged <- df_other_response_data %>% 
+  arrange(today, `_uuid`)
+
+write_csv(x = df_data_arranged, file = paste0("outputs/others_responses_",as_date(today()),"_", hour(now()) ,".csv"))
+
+
+# time_verify_new_agents --------------------------------------------------
+
 # •	time_verify_new_agents should be flagged IF no response is recorded but skip logic was not activated. AND IF response = >20
-# 
+
+
 # •	perc_value_delivered should be flagged IF type_FSP = banking institution AND decimal =  >2 
 # 
 # •	charge_each_transfer should be flagged IF response = >10,000,000  OR “999”  
