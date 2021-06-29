@@ -5,6 +5,7 @@ library(lubridate)
 library(koboAPI)
 # library(koboloadeR)
 
+# rm(list = ls())
 
 source("support_data/credentials.R")
 
@@ -98,31 +99,39 @@ for (cln in others_colnames) {
   df_filtered_data <- df_tool_data %>% 
     select("_uuid", "today", "enumerator_id", current_value = cln) %>% 
     filter(!is.na(current_value)) %>% 
-    mutate( name = cln)
+    mutate( name = cln, appropriate_choice = NA)
   df_other_response_data <- rbind(df_other_response_data, df_filtered_data)
 }
 # arrange the data
 df_data_arranged <- df_other_response_data %>% 
   arrange(today, `_uuid`)
 
-write_csv(x = df_data_arranged, file = paste0("outputs/others_responses_",as_date(today()),"_", hour(now()) ,".csv"))
+
+write_csv(x = df_data_arranged, file = paste0("outputs/others_responses_",as_date(today()),"_", hour(now()) ,".csv"), na = "")
 
 
 # time_verify_new_agents --------------------------------------------------
 
 # •	time_verify_new_agents should be flagged IF no response is recorded but skip logic was not activated. AND IF response = >20
 
+df_time_verify_new_agents <- df_tool_data %>% 
+  filter(
+    time_verify_new_agents >= 20
+  )
 
-# •	perc_value_delivered should be flagged IF type_FSP = banking institution AND decimal =  >2 
 # 
 # •	charge_each_transfer should be flagged IF response = >10,000,000  OR “999”  
-# 
+df_charge_each_transfer <- df_tool_data %>% 
+  filter(
+    charge_each_transfer == 999 |charge_each_transfer >= 20
+  )
+
 # •	fixed_fee should be flagged IF response = > 10,000  OR “999”
 # 
 # •	withdraw_fixed_fee_amount should be flagged IF response = > 10,000 OR “999”
-# 
+
+# •	perc_value_delivered should be flagged IF type_FSP = banking institution AND decimal =  >2 
 # •	perc_value_delivered should be flagged IF response = > 10    OR “999”
-# 
 # •	perc_value_withdraw should be flagged IF response = > 10 OR “999” 
 # 
 # •	number_agents should be flagged IF response = “999”
