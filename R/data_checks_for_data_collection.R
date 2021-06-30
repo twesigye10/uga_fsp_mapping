@@ -161,11 +161,27 @@ df_perc_value_withdraw <- df_tool_data %>%
   mutate(i.check.identified_issue = "value_outside_limits")
 
 # •	number_agents should be flagged IF response = “999”
-# 
+df_number_agents <- df_tool_data %>% 
+  filter(
+    number_agents == 999
+  ) %>% 
+  mutate(i.check.identified_issue = "value_outside_limits")
 # •	yes_operate_presence cannot be larger number than number_agents
-# 
+df_yes_operate_presence <- df_tool_data %>% 
+  filter(
+    yes_operate_presence > number_agents
+  ) %>% 
+  mutate(i.check.identified_issue = "value_outside_limits")
 # •	records_kept response should be changed to “all_above” IF “withdrawal” AND “deposit” AND “cash_transfer” are all selected. 
-# 
+df_records_kept <- df_tool_data %>% 
+  filter(
+    grepl("withdrawal", records_kept, ignore.case=TRUE) & grepl("deposit", records_kept, ignore.case=TRUE) & grepl("cash_transfer", records_kept, ignore.case=TRUE) 
+  ) %>% 
+  mutate(i.check.identified_issue = "response to be changed to all_above")
 # •	monitoring_agent_transparency should be flagged IF response “not_applicable”  Does the organization use agents? Then not applicable should not be answered here. 
-
+df_monitoring_agent_transparency <- df_tool_data %>% 
+  filter(
+    monitoring_agent_transparency == "not_applicable" & number_agents > 0
+      ) %>% 
+  mutate(i.check.identified_issue = "questionable response")
 
