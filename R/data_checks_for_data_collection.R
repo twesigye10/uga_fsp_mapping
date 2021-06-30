@@ -59,7 +59,8 @@ kbo_labelled <- kobold::choices = choice_names_to_labels(object = kbo)
 # read data ---------------------------------------------------------------
 df_tool_data <- read_csv("inputs/UGA2103_Financial_Service_Providers_Assessment_KI_Tool_June2021_2021-06-24.csv")
 
-
+important_columns <- c("_uuid", "today", "enumerator_id")
+  
 # Time interval for the survey --------------------------------------------
 
 min_time_of_survey <- 60
@@ -69,7 +70,7 @@ df_check_survey_time <-  df_tool_data %>%
   mutate(
     i.check.survey_time_interval = difftime(end,start, units = "mins"),
     i.check.survey_time_interval = round(i.check.survey_time_interval,2),
-    i.check.found_issue = case_when(
+    i.check.identified_issue = case_when(
       i.check.survey_time_interval < min_time_of_survey ~ "less_survey_time",
       i.check.survey_time_interval > max_time_of_survey ~ "more_survey_time",
       TRUE ~ "normal_survey_time"
@@ -117,23 +118,48 @@ write_csv(x = df_data_arranged, file = paste0("outputs/others_responses_",as_dat
 df_time_verify_new_agents <- df_tool_data %>% 
   filter(
     time_verify_new_agents >= 20
+  ) %>% 
+  mutate(
+    i.check.identified_issue = "value_outside_limits"
   )
 
 # 
 # •	charge_each_transfer should be flagged IF response = >10,000,000  OR “999”  
 df_charge_each_transfer <- df_tool_data %>% 
   filter(
-    charge_each_transfer == 999 |charge_each_transfer >= 20
+    charge_each_transfer == 999 | charge_each_transfer >= 10000000
+  ) %>% 
+  mutate(
+    i.check.identified_issue = "value_outside_limits"
   )
 
 # •	fixed_fee should be flagged IF response = > 10,000  OR “999”
-# 
+df_fixed_fee <- df_tool_data %>% 
+  filter(
+    fixed_fee == 999 | fixed_fee >= 10000
+  ) %>% 
+  mutate(i.check.identified_issue = "value_outside_limits")
 # •	withdraw_fixed_fee_amount should be flagged IF response = > 10,000 OR “999”
-
+df_withdraw_fixed_fee_amount <- df_tool_data %>% 
+  filter(
+    withdraw_fixed_fee_amount == 999 | withdraw_fixed_fee_amount >= 10000
+  ) %>% 
+  mutate(i.check.identified_issue = "value_outside_limits")
 # •	perc_value_delivered should be flagged IF type_FSP = banking institution AND decimal =  >2 
 # •	perc_value_delivered should be flagged IF response = > 10    OR “999”
+df_perc_value_delivered <- df_tool_data %>% 
+  filter(
+    (type_FSP == "banking institution" & decimal >= 2) | (perc_value_delivered == 999 | perc_value_delivered >= 10)
+  ) %>% 
+  mutate(i.check.identified_issue = "value_outside_limits")
+
 # •	perc_value_withdraw should be flagged IF response = > 10 OR “999” 
-# 
+df_perc_value_withdraw <- df_tool_data %>% 
+  filter(
+    perc_value_withdraw == 999 | perc_value_withdraw >= 10
+  ) %>% 
+  mutate(i.check.identified_issue = "value_outside_limits")
+
 # •	number_agents should be flagged IF response = “999”
 # 
 # •	yes_operate_presence cannot be larger number than number_agents
