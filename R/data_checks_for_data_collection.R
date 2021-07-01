@@ -31,7 +31,9 @@ df_check_survey_time <-  df_tool_data %>%
     i.check.checked_date = as_date(today()),
     i.check.comment = NA
   )%>% 
-  filter(i.check.identified_issue %in% c("less_survey_time", "more_survey_time"))
+  filter(i.check.identified_issue %in% c("less_survey_time", "more_survey_time")) %>% 
+  select(starts_with("i.check"))%>% 
+  rename_with(~gsub("i.check", "", .x, fixed=TRUE))
 
 
 
@@ -85,7 +87,9 @@ df_time_verify_new_agents <- df_tool_data %>%
     i.check.checked_by = "Mathias",
     i.check.checked_date = as_date(today()),
     i.check.comment = NA
-  )
+  ) %>% 
+  select(starts_with("i.check"))%>% 
+  rename_with(~gsub("i.check", "", .x, fixed=TRUE))
 
 # 
 # •	charge_each_transfer should be flagged IF response = >10,000,000  OR “999”  
@@ -104,7 +108,9 @@ df_charge_each_transfer <- df_tool_data %>%
     i.check.checked_by = "Mathias",
     i.check.checked_date = as_date(today()),
     i.check.comment = NA
-  )
+  ) %>% 
+  select(starts_with("i.check"))%>% 
+  rename_with(~gsub("i.check", "", .x, fixed=TRUE))
 
 # •	fixed_fee should be flagged IF response = > 10,000  OR “999”
 df_fixed_fee <- df_tool_data %>% 
@@ -122,7 +128,9 @@ df_fixed_fee <- df_tool_data %>%
     i.check.checked_by = "Mathias",
     i.check.checked_date = as_date(today()),
     i.check.comment = NA
-  )
+  ) %>% 
+  select(starts_with("i.check"))%>% 
+  rename_with(~gsub("i.check", "", .x, fixed=TRUE))
 # •	withdraw_fixed_fee_amount should be flagged IF response = > 10,000 OR “999”
 df_withdraw_fixed_fee_amount <- df_tool_data %>% 
   filter(
@@ -139,7 +147,9 @@ df_withdraw_fixed_fee_amount <- df_tool_data %>%
     i.check.checked_by = "Mathias",
     i.check.checked_date = as_date(today()),
     i.check.comment = NA
-  )
+  ) %>% 
+  select(starts_with("i.check"))%>% 
+  rename_with(~gsub("i.check", "", .x, fixed=TRUE))
 # •	perc_value_delivered should be flagged IF type_FSP = banking institution AND decimal =  >2 
 # •	perc_value_delivered should be flagged IF response = > 10    OR “999”
 df_perc_value_delivered <- df_tool_data %>% 
@@ -157,7 +167,9 @@ df_perc_value_delivered <- df_tool_data %>%
     i.check.checked_by = "Mathias",
     i.check.checked_date = as_date(today()),
     i.check.comment = NA
-  )
+  ) %>% 
+  select(starts_with("i.check"))%>% 
+  rename_with(~gsub("i.check", "", .x, fixed=TRUE))
 
 # •	perc_value_withdraw should be flagged IF response = > 10 OR “999” 
 df_perc_value_withdraw <- df_tool_data %>% 
@@ -175,7 +187,9 @@ df_perc_value_withdraw <- df_tool_data %>%
     i.check.checked_by = "Mathias",
     i.check.checked_date = as_date(today()),
     i.check.comment = NA
-  )
+  ) %>% 
+  select(starts_with("i.check"))%>% 
+  rename_with(~gsub("i.check", "", .x, fixed=TRUE))
 
 # •	number_agents should be flagged IF response = “999”
 df_number_agents <- df_tool_data %>% 
@@ -193,7 +207,9 @@ df_number_agents <- df_tool_data %>%
     i.check.checked_by = "Mathias",
     i.check.checked_date = as_date(today()),
     i.check.comment = NA
-  )
+  ) %>% 
+  select(starts_with("i.check"))%>% 
+  rename_with(~gsub("i.check", "", .x, fixed=TRUE))
 # •	yes_operate_presence cannot be larger number than number_agents
 df_yes_operate_presence <- df_tool_data %>% 
   filter(
@@ -210,7 +226,9 @@ df_yes_operate_presence <- df_tool_data %>%
     i.check.checked_by = "Mathias",
     i.check.checked_date = as_date(today()),
     i.check.comment = NA
-  )
+  ) %>% 
+  select(starts_with("i.check"))%>% 
+  rename_with(~gsub("i.check", "", .x, fixed=TRUE))
 # •	records_kept response should be changed to “all_above” IF “withdrawal” AND “deposit” AND “cash_transfer” are all selected. 
 df_records_kept <- df_tool_data %>% 
   filter(
@@ -227,7 +245,9 @@ df_records_kept <- df_tool_data %>%
     i.check.checked_by = "Mathias",
     i.check.checked_date = as_date(today()),
     i.check.comment = NA
-  )
+  ) %>% 
+  select(starts_with("i.check"))%>% 
+  rename_with(~gsub("i.check", "", .x, fixed=TRUE))
 # •	monitoring_agent_transparency should be flagged IF response “not_applicable”  Does the organization use agents? Then not applicable should not be answered here. 
 df_monitoring_agent_transparency <- df_tool_data %>% 
   filter(
@@ -244,5 +264,7 @@ df_monitoring_agent_transparency <- df_tool_data %>%
     i.check.checked_by = "Mathias",
     i.check.checked_date = as_date(today()),
     i.check.comment = NA
-  )
+  ) %>% 
+  select(starts_with("i.check"))%>% 
+  rename_with(~gsub("i.check", "", .x, fixed=TRUE))
 
