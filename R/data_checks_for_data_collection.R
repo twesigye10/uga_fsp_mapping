@@ -269,4 +269,7 @@ df_c_monitoring_agent_transparency <- df_tool_data %>%
   rename_with(~gsub("i.check", "", .x, fixed=TRUE))
 
 
+# merge checked data ------------------------------------------------------
 
+df_required_after_check <- ls()
+df_merged_checked_data <- rbind(df_required_after_check)
