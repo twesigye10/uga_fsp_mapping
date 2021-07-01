@@ -33,7 +33,7 @@ df_c_survey_time <-  df_tool_data %>%
   )%>% 
   filter(i.check.identified_issue %in% c("less_survey_time", "more_survey_time")) %>% 
   select(starts_with("i.check"))%>% 
-  rename_with(~gsub("i.check", "", .x, fixed=TRUE))
+  rename_with(~gsub("i.check.", "", .x, fixed=TRUE))
 
 
 
@@ -89,7 +89,7 @@ df_c_time_verify_new_agents <- df_tool_data %>%
     i.check.comment = NA
   ) %>% 
   select(starts_with("i.check"))%>% 
-  rename_with(~gsub("i.check", "", .x, fixed=TRUE))
+  rename_with(~gsub("i.check.", "", .x, fixed=TRUE))
 
 # 
 # •	charge_each_transfer should be flagged IF response = >10,000,000  OR “999”  
@@ -110,7 +110,7 @@ df_c_charge_each_transfer <- df_tool_data %>%
     i.check.comment = NA
   ) %>% 
   select(starts_with("i.check"))%>% 
-  rename_with(~gsub("i.check", "", .x, fixed=TRUE))
+  rename_with(~gsub("i.check.", "", .x, fixed=TRUE))
 
 # •	fixed_fee should be flagged IF response = > 10,000  OR “999”
 df_c_fixed_fee <- df_tool_data %>% 
@@ -130,7 +130,7 @@ df_c_fixed_fee <- df_tool_data %>%
     i.check.comment = NA
   ) %>% 
   select(starts_with("i.check"))%>% 
-  rename_with(~gsub("i.check", "", .x, fixed=TRUE))
+  rename_with(~gsub("i.check.", "", .x, fixed=TRUE))
 # •	withdraw_fixed_fee_amount should be flagged IF response = > 10,000 OR “999”
 df_c_withdraw_fixed_fee_amount <- df_tool_data %>% 
   filter(
@@ -149,12 +149,12 @@ df_c_withdraw_fixed_fee_amount <- df_tool_data %>%
     i.check.comment = NA
   ) %>% 
   select(starts_with("i.check"))%>% 
-  rename_with(~gsub("i.check", "", .x, fixed=TRUE))
+  rename_with(~gsub("i.check.", "", .x, fixed=TRUE))
 # •	perc_value_delivered should be flagged IF type_FSP = banking institution AND decimal =  >2 
 # •	perc_value_delivered should be flagged IF response = > 10    OR “999”
 df_c_perc_value_delivered <- df_tool_data %>% 
   filter(
-    (type_FSP == "banking institution" & decimal >= 2) | (perc_value_delivered == 999 | perc_value_delivered >= 10)
+    (organisation_type == "bank" & nchar(strsplit(as.character(perc_value_delivered), "\\.")[[1]][2]) >= 2) | (perc_value_delivered == 999 | perc_value_delivered >= 10)
   ) %>% 
   mutate(
     i.check.uuid = `_uuid`,
@@ -169,7 +169,7 @@ df_c_perc_value_delivered <- df_tool_data %>%
     i.check.comment = NA
   ) %>% 
   select(starts_with("i.check"))%>% 
-  rename_with(~gsub("i.check", "", .x, fixed=TRUE))
+  rename_with(~gsub("i.check.", "", .x, fixed=TRUE))
 
 # •	perc_value_withdraw should be flagged IF response = > 10 OR “999” 
 df_c_perc_value_withdraw <- df_tool_data %>% 
@@ -189,7 +189,7 @@ df_c_perc_value_withdraw <- df_tool_data %>%
     i.check.comment = NA
   ) %>% 
   select(starts_with("i.check"))%>% 
-  rename_with(~gsub("i.check", "", .x, fixed=TRUE))
+  rename_with(~gsub("i.check.", "", .x, fixed=TRUE))
 
 # •	number_agents should be flagged IF response = “999”
 df_c_number_agents <- df_tool_data %>% 
@@ -209,7 +209,7 @@ df_c_number_agents <- df_tool_data %>%
     i.check.comment = NA
   ) %>% 
   select(starts_with("i.check"))%>% 
-  rename_with(~gsub("i.check", "", .x, fixed=TRUE))
+  rename_with(~gsub("i.check.", "", .x, fixed=TRUE))
 # •	yes_operate_presence cannot be larger number than number_agents
 df_c_yes_operate_presence <- df_tool_data %>% 
   filter(
@@ -228,7 +228,7 @@ df_c_yes_operate_presence <- df_tool_data %>%
     i.check.comment = NA
   ) %>% 
   select(starts_with("i.check"))%>% 
-  rename_with(~gsub("i.check", "", .x, fixed=TRUE))
+  rename_with(~gsub("i.check.", "", .x, fixed=TRUE))
 # •	records_kept response should be changed to “all_above” IF “withdrawal” AND “deposit” AND “cash_transfer” are all selected. 
 df_c_records_kept <- df_tool_data %>% 
   filter(
@@ -247,7 +247,7 @@ df_c_records_kept <- df_tool_data %>%
     i.check.comment = NA
   ) %>% 
   select(starts_with("i.check"))%>% 
-  rename_with(~gsub("i.check", "", .x, fixed=TRUE))
+  rename_with(~gsub("i.check.", "", .x, fixed=TRUE))
 # •	monitoring_agent_transparency should be flagged IF response “not_applicable”  Does the organization use agents? Then not applicable should not be answered here. 
 df_c_monitoring_agent_transparency <- df_tool_data %>% 
   filter(
@@ -266,10 +266,16 @@ df_c_monitoring_agent_transparency <- df_tool_data %>%
     i.check.comment = NA
   ) %>% 
   select(starts_with("i.check"))%>% 
-  rename_with(~gsub("i.check", "", .x, fixed=TRUE))
+  rename_with(~gsub("i.check.", "", .x, fixed=TRUE))
 
 
 # merge checked data ------------------------------------------------------
 
-df_required_after_check <- ls()
-df_merged_checked_data <- rbind(df_required_after_check)
+df_required_after_check <- ls()[grepl(pattern = "df_C_", x = ls() ,  ignore.case=TRUE)]
+
+
+df_merged_checked_data <- rbind(df_c_charge_each_transfer, df_c_fixed_fee, df_c_monitoring_agent_transparency,
+                                df_c_number_agents, df_c_perc_value_delivered, df_c_perc_value_withdraw,          
+                                df_c_records_kept, df_c_survey_time, df_c_time_verify_new_agents,       
+                                df_c_withdraw_fixed_fee_amount, df_c_yes_operate_presence         )
+
