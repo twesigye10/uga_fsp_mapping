@@ -6,7 +6,7 @@ library(lubridate)
 # rm(list = ls())
 
 # read data ---------------------------------------------------------------
-df_tool_data <- read_csv("inputs/UGA2103_Financial_Service_Providers_Assessment_KI_Tool_June2021_2021-06-24.csv")
+df_tool_data <- read_csv("inputs/UGA2103_Financial_Service_Providers_Assessment_KI_Tool_June2021.csv")
 
 # Time interval for the survey --------------------------------------------
 
