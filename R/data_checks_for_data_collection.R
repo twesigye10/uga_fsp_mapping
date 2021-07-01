@@ -104,7 +104,7 @@ df_c_charge_each_transfer <- df_tool_data %>%
     i.check.identified_issue = "value_outside_limits",
     i.check.type = NA,
     i.check.name = "charge_each_transfer",
-    i.check.value = charge_each_transfer,
+    i.check.value = as.integer(charge_each_transfer),
     i.check.checked_by = "Mathias",
     i.check.checked_date = as_date(today()),
     i.check.comment = NA
@@ -277,5 +277,7 @@ df_required_after_check <- ls()[grepl(pattern = "df_C_", x = ls() ,  ignore.case
 df_merged_checked_data <- rbind(df_c_charge_each_transfer, df_c_fixed_fee, df_c_monitoring_agent_transparency,
                                 df_c_number_agents, df_c_perc_value_delivered, df_c_perc_value_withdraw,          
                                 df_c_records_kept, df_c_survey_time, df_c_time_verify_new_agents,       
-                                df_c_withdraw_fixed_fee_amount, df_c_yes_operate_presence         )
+                                df_c_withdraw_fixed_fee_amount, df_c_yes_operate_presence ) %>% 
+  arrange(today, uuid)
 
+write_csv(x = df_merged_checked_data, file = paste0("outputs/pre_cleaning_log_checks_",as_date(today()),"_", hour(now()) ,".csv"), na = "")
