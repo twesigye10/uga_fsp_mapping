@@ -13,7 +13,7 @@ df_tool_data <- read_csv("inputs/UGA2103_Financial_Service_Providers_Assessment_
 min_time_of_survey <- 60
 max_time_of_survey <- 180
 
-df_check_survey_time <-  df_tool_data %>% 
+df_c_survey_time <-  df_tool_data %>% 
   mutate(
     i.check.uuid = `_uuid`,
     i.check.today = today,
@@ -72,7 +72,7 @@ write_csv(x = df_data_arranged, file = paste0("outputs/others_responses_",as_dat
 
 # •	time_verify_new_agents should be flagged IF no response is recorded but skip logic was not activated. AND IF response = >20
 
-df_time_verify_new_agents <- df_tool_data %>% 
+df_c_time_verify_new_agents <- df_tool_data %>% 
   filter(
     time_verify_new_agents >= 20
   ) %>% 
@@ -93,7 +93,7 @@ df_time_verify_new_agents <- df_tool_data %>%
 
 # 
 # •	charge_each_transfer should be flagged IF response = >10,000,000  OR “999”  
-df_charge_each_transfer <- df_tool_data %>% 
+df_c_charge_each_transfer <- df_tool_data %>% 
   filter(
     charge_each_transfer == 999 | charge_each_transfer >= 10000000
   ) %>% 
@@ -113,7 +113,7 @@ df_charge_each_transfer <- df_tool_data %>%
   rename_with(~gsub("i.check", "", .x, fixed=TRUE))
 
 # •	fixed_fee should be flagged IF response = > 10,000  OR “999”
-df_fixed_fee <- df_tool_data %>% 
+df_c_fixed_fee <- df_tool_data %>% 
   filter(
     fixed_fee == 999 | fixed_fee >= 10000
   ) %>% 
@@ -132,7 +132,7 @@ df_fixed_fee <- df_tool_data %>%
   select(starts_with("i.check"))%>% 
   rename_with(~gsub("i.check", "", .x, fixed=TRUE))
 # •	withdraw_fixed_fee_amount should be flagged IF response = > 10,000 OR “999”
-df_withdraw_fixed_fee_amount <- df_tool_data %>% 
+df_c_withdraw_fixed_fee_amount <- df_tool_data %>% 
   filter(
     withdraw_fixed_fee_amount == 999 | withdraw_fixed_fee_amount >= 10000
   ) %>% 
@@ -152,7 +152,7 @@ df_withdraw_fixed_fee_amount <- df_tool_data %>%
   rename_with(~gsub("i.check", "", .x, fixed=TRUE))
 # •	perc_value_delivered should be flagged IF type_FSP = banking institution AND decimal =  >2 
 # •	perc_value_delivered should be flagged IF response = > 10    OR “999”
-df_perc_value_delivered <- df_tool_data %>% 
+df_c_perc_value_delivered <- df_tool_data %>% 
   filter(
     (type_FSP == "banking institution" & decimal >= 2) | (perc_value_delivered == 999 | perc_value_delivered >= 10)
   ) %>% 
@@ -172,7 +172,7 @@ df_perc_value_delivered <- df_tool_data %>%
   rename_with(~gsub("i.check", "", .x, fixed=TRUE))
 
 # •	perc_value_withdraw should be flagged IF response = > 10 OR “999” 
-df_perc_value_withdraw <- df_tool_data %>% 
+df_c_perc_value_withdraw <- df_tool_data %>% 
   filter(
     perc_value_withdraw == 999 | perc_value_withdraw >= 10
   ) %>% 
@@ -192,7 +192,7 @@ df_perc_value_withdraw <- df_tool_data %>%
   rename_with(~gsub("i.check", "", .x, fixed=TRUE))
 
 # •	number_agents should be flagged IF response = “999”
-df_number_agents <- df_tool_data %>% 
+df_c_number_agents <- df_tool_data %>% 
   filter(
     number_agents == 999
   ) %>% 
@@ -211,7 +211,7 @@ df_number_agents <- df_tool_data %>%
   select(starts_with("i.check"))%>% 
   rename_with(~gsub("i.check", "", .x, fixed=TRUE))
 # •	yes_operate_presence cannot be larger number than number_agents
-df_yes_operate_presence <- df_tool_data %>% 
+df_c_yes_operate_presence <- df_tool_data %>% 
   filter(
     yes_operate_presence > number_agents
   ) %>% 
@@ -230,7 +230,7 @@ df_yes_operate_presence <- df_tool_data %>%
   select(starts_with("i.check"))%>% 
   rename_with(~gsub("i.check", "", .x, fixed=TRUE))
 # •	records_kept response should be changed to “all_above” IF “withdrawal” AND “deposit” AND “cash_transfer” are all selected. 
-df_records_kept <- df_tool_data %>% 
+df_c_records_kept <- df_tool_data %>% 
   filter(
     grepl("withdrawal", records_kept, ignore.case=TRUE) & grepl("deposit", records_kept, ignore.case=TRUE) & grepl("cash_transfer", records_kept, ignore.case=TRUE) 
   ) %>% 
@@ -249,7 +249,7 @@ df_records_kept <- df_tool_data %>%
   select(starts_with("i.check"))%>% 
   rename_with(~gsub("i.check", "", .x, fixed=TRUE))
 # •	monitoring_agent_transparency should be flagged IF response “not_applicable”  Does the organization use agents? Then not applicable should not be answered here. 
-df_monitoring_agent_transparency <- df_tool_data %>% 
+df_c_monitoring_agent_transparency <- df_tool_data %>% 
   filter(
     monitoring_agent_transparency == "not_applicable" & number_agents > 0
   ) %>% 
@@ -267,4 +267,6 @@ df_monitoring_agent_transparency <- df_tool_data %>%
   ) %>% 
   select(starts_with("i.check"))%>% 
   rename_with(~gsub("i.check", "", .x, fixed=TRUE))
+
+
 
