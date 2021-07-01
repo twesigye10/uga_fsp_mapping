@@ -8,8 +8,6 @@ library(lubridate)
 # read data ---------------------------------------------------------------
 df_tool_data <- read_csv("inputs/UGA2103_Financial_Service_Providers_Assessment_KI_Tool_June2021_2021-06-24.csv")
 
-important_columns <- c("_uuid", "today", "enumerator_id")
-  
 # Time interval for the survey --------------------------------------------
 
 min_time_of_survey <- 60
@@ -17,16 +15,24 @@ max_time_of_survey <- 180
 
 df_check_survey_time <-  df_tool_data %>% 
   mutate(
-    i.check.survey_time_interval = difftime(end,start, units = "mins"),
-    i.check.survey_time_interval = round(i.check.survey_time_interval,2),
+    i.check.uuid = `_uuid`,
+    i.check.today = today,
+    i.check.enumerator_id = enumerator_id,
+    int.survey_time_interval = difftime(end,start, units = "mins"),
+    int.survey_time_interval = round(int.survey_time_interval,2),
     i.check.identified_issue = case_when(
-      i.check.survey_time_interval < min_time_of_survey ~ "less_survey_time",
-      i.check.survey_time_interval > max_time_of_survey ~ "more_survey_time",
-      TRUE ~ "normal_survey_time"
-    )
-)
+      int.survey_time_interval < min_time_of_survey ~ "less_survey_time",
+      int.survey_time_interval > max_time_of_survey ~ "more_survey_time",
+      TRUE ~ "normal_survey_time" ),
+    i.check.type = NA,
+    i.check.name = NA,
+    i.check.value = NA,
+    i.check.checked_by = "Mathias",
+    i.check.checked_date = as_date(today()),
+    i.check.comment = NA
+  )%>% 
+  filter(i.check.identified_issue %in% c("less_survey_time", "more_survey_time"))
 
-df_check_survey_time %>% select(starts_with("i.check"))
 
 
 # All “other” responses should be flagged ---------------------------------
@@ -116,7 +122,7 @@ df_fixed_fee <- df_tool_data %>%
     i.check.checked_by = "Mathias",
     i.check.checked_date = as_date(today()),
     i.check.comment = NA
-    )
+  )
 # •	withdraw_fixed_fee_amount should be flagged IF response = > 10,000 OR “999”
 df_withdraw_fixed_fee_amount <- df_tool_data %>% 
   filter(
@@ -133,7 +139,7 @@ df_withdraw_fixed_fee_amount <- df_tool_data %>%
     i.check.checked_by = "Mathias",
     i.check.checked_date = as_date(today()),
     i.check.comment = NA
-    )
+  )
 # •	perc_value_delivered should be flagged IF type_FSP = banking institution AND decimal =  >2 
 # •	perc_value_delivered should be flagged IF response = > 10    OR “999”
 df_perc_value_delivered <- df_tool_data %>% 
@@ -151,7 +157,7 @@ df_perc_value_delivered <- df_tool_data %>%
     i.check.checked_by = "Mathias",
     i.check.checked_date = as_date(today()),
     i.check.comment = NA
-    )
+  )
 
 # •	perc_value_withdraw should be flagged IF response = > 10 OR “999” 
 df_perc_value_withdraw <- df_tool_data %>% 
@@ -169,7 +175,7 @@ df_perc_value_withdraw <- df_tool_data %>%
     i.check.checked_by = "Mathias",
     i.check.checked_date = as_date(today()),
     i.check.comment = NA
-    )
+  )
 
 # •	number_agents should be flagged IF response = “999”
 df_number_agents <- df_tool_data %>% 
@@ -187,7 +193,7 @@ df_number_agents <- df_tool_data %>%
     i.check.checked_by = "Mathias",
     i.check.checked_date = as_date(today()),
     i.check.comment = NA
-    )
+  )
 # •	yes_operate_presence cannot be larger number than number_agents
 df_yes_operate_presence <- df_tool_data %>% 
   filter(
@@ -204,7 +210,7 @@ df_yes_operate_presence <- df_tool_data %>%
     i.check.checked_by = "Mathias",
     i.check.checked_date = as_date(today()),
     i.check.comment = NA
-    )
+  )
 # •	records_kept response should be changed to “all_above” IF “withdrawal” AND “deposit” AND “cash_transfer” are all selected. 
 df_records_kept <- df_tool_data %>% 
   filter(
@@ -221,12 +227,12 @@ df_records_kept <- df_tool_data %>%
     i.check.checked_by = "Mathias",
     i.check.checked_date = as_date(today()),
     i.check.comment = NA
-    )
+  )
 # •	monitoring_agent_transparency should be flagged IF response “not_applicable”  Does the organization use agents? Then not applicable should not be answered here. 
 df_monitoring_agent_transparency <- df_tool_data %>% 
   filter(
     monitoring_agent_transparency == "not_applicable" & number_agents > 0
-      ) %>% 
+  ) %>% 
   mutate(
     i.check.uuid = `_uuid`,
     i.check.today = today,
@@ -238,5 +244,5 @@ df_monitoring_agent_transparency <- df_tool_data %>%
     i.check.checked_by = "Mathias",
     i.check.checked_date = as_date(today()),
     i.check.comment = NA
-    )
+  )
 
