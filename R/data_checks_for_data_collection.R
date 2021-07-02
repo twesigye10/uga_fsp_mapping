@@ -252,14 +252,3 @@ df_merged_checked_data <- rbind(df_c_charge_each_transfer, df_c_fixed_fee, df_c_
   arrange(today, uuid)
 
 write_csv(x = df_merged_checked_data, file = paste0("outputs/pre_cleaning_log_checks_",as_date(today()),"_", hour(now()) ,".csv"), na = "")
-
-
-# add choices to the data -------------------------------------------------
-
-# attach choices to the survey
-
-
-# extract parent question
-
-
-# make a join or do a lookup
