@@ -1,7 +1,7 @@
 # data checks
 library(tidyverse)
 library(glue)
-library(koboAPI)
+# library(koboAPI)
 library(butteR)
 # library(koboloadeR)
 
@@ -51,10 +51,20 @@ write_csv(x = df_data_arranged, file = paste0("outputs/others_responses_",as_dat
 
 # extract parent question
 
+df_survey_extract <- df_survey %>% 
+  select(name, type)
+
+df_data_parent_qns <- df_data_arranged %>% 
+  mutate(
+    parent_qn = str_replace_all(name, "/.*", ""),
+    parent_qn = str_replace_all(parent_qn, "_other", "")
+  ) %>% 
+  left_join(df_survey_extract, by = c("parent_qn"="name")) %>% 
+  separate(col = type, into = c("selection", "choice_list"), sep =" ", remove = FALSE, extra = "drop" )
 
 # make a join or do a lookup
 
-
+?separate
 
 # butteR::auto_detect_sm_parents(df_tool_data)
 # ?auto_detect_sm_parents
