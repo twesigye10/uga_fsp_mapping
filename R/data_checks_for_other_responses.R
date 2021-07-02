@@ -9,6 +9,9 @@ library(butteR)
 # read data ---------------------------------------------------------------
 df_tool_data <- read_csv("inputs/UGA2103_Financial_Service_Providers_Assessment_KI_Tool_June2021_2021-06-24.csv")
 
+df_survey <- read_csv("inputs/survey.csv")
+
+df_choices <- read_csv("inputs/choices.csv")
 
 # All “other” responses should be flagged ---------------------------------
 # - identify them
@@ -16,13 +19,6 @@ df_tool_data <- read_csv("inputs/UGA2103_Financial_Service_Providers_Assessment_
 # - add column for re-categorization
 # - Keep important columns to help you take them back
 # - have some kind of identifier
-
-# - ### needed columns
-# - uuid
-# - name(parent question)
-# - today
-# - 
-# - 
 
 # get questions with other
 others_colnames <-  df_tool_data %>% 
@@ -37,12 +33,17 @@ for (cln in others_colnames) {
   df_filtered_data <- df_tool_data %>% 
     select("_uuid", "today", "enumerator_id", current_value = cln) %>% 
     filter(!is.na(current_value)) %>% 
-    mutate( name = cln)
+    mutate( name = cln, appropriate_choice = NA)
   df_other_response_data <- rbind(df_other_response_data, df_filtered_data)
 }
 # arrange the data
 df_data_arranged <- df_other_response_data %>% 
   arrange(today, `_uuid`)
+
+
+write_csv(x = df_data_arranged, file = paste0("outputs/others_responses_",as_date(today()),"_", hour(now()) ,".csv"), na = "")
+
+
 
 
 
