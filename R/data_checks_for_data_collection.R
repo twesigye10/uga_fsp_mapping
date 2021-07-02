@@ -8,6 +8,9 @@ library(lubridate)
 # read data ---------------------------------------------------------------
 df_tool_data <- read_csv("inputs/UGA2103_Financial_Service_Providers_Assessment_KI_Tool_June2021.csv")
 
+df_survey <- read_csv("inputs/survey.csv")
+
+df_choices <- read_csv("inputs/choices.csv")
 # Time interval for the survey --------------------------------------------
 
 min_time_of_survey <- 60
@@ -281,3 +284,4 @@ df_merged_checked_data <- rbind(df_c_charge_each_transfer, df_c_fixed_fee, df_c_
   arrange(today, uuid)
 
 write_csv(x = df_merged_checked_data, file = paste0("outputs/pre_cleaning_log_checks_",as_date(today()),"_", hour(now()) ,".csv"), na = "")
+
