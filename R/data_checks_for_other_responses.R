@@ -44,7 +44,15 @@ df_data_arranged <- df_other_response_data %>%
 write_csv(x = df_data_arranged, file = paste0("outputs/others_responses_",as_date(today()),"_", hour(now()) ,".csv"), na = "")
 
 
+# add choices to the data -------------------------------------------------
 
+# attach choices to the survey
+
+
+# extract parent question
+
+
+# make a join or do a lookup
 
 
 
