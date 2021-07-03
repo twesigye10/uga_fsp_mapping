@@ -41,9 +41,6 @@ df_data_arranged <- df_other_response_data %>%
   arrange(today, `_uuid`)
 
 
-write_csv(x = df_data_arranged, file = paste0("outputs/others_responses_",as_date(today()),"_", hour(now()) ,".csv"), na = "")
-
-
 # add choices to the data -------------------------------------------------
 
 # gather choice options based on unique choices list
@@ -72,3 +69,5 @@ df_data_parent_qns <- df_data_arranged %>%
 df_join_other_response_with_choices <- df_data_parent_qns %>% 
   left_join(df_grouped_choices, by = "list_name")
 
+# output the resulting data frame
+write_csv(x = df_join_other_response_with_choices, file = paste0("outputs/others_responses_",as_date(today()),"_", hour(now()) ,".csv"), na = "")
