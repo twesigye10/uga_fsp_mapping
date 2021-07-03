@@ -55,7 +55,7 @@ for (vl in df_unique_choices) {
   df_grouped_choices <- rbind(df_grouped_choices, data.frame(list_name=vl, choice_options = current_data))
 }
 
-# option:2
+# Option 2:
 df_grouped_choices_2 <- df_choices %>% 
   group_by(list_name) %>% 
   summarise(choice_options = paste(name, collapse = " : "))
