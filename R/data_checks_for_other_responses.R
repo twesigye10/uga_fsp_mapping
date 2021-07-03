@@ -66,7 +66,7 @@ df_data_parent_qns <- df_data_arranged %>%
     parent_qn = str_replace_all(parent_qn, "_other", "")
   ) %>% 
   left_join(df_survey %>% select(name, type), by = c("parent_qn"="name")) %>% 
-  separate(col = type, into = c("select_type", "list_name"), sep =" ", remove = FALSE, extra = "drop" )
+  separate(col = type, into = c("select_type", "list_name"), sep =" ", remove = TRUE, extra = "drop" )
 
 # make a join or do a lookup
 
