@@ -48,39 +48,31 @@ write_csv(x = df_data_arranged, file = paste0("outputs/others_responses_",as_dat
 
 # attach choices to the survey
 df_unique_choices <- df_choices %>% 
-  select(list_name) %>% unique() %>% pull()
-
-# df_unique_choices <- df_choices %>% 
-#   select(list_name, name, label)
+  pull(list_name) %>% unique()
 
 df_grouped_choices <- data.frame()
 
 for (vl in df_unique_choices) {
   current_data <- df_choices %>% 
-    filter(list_name == vl) %>% select(name) %>% pull() %>% str_c(collapse = " : ")
-  df_grouped_choices <- rbind(df_grouped_choices, data.frame(list_name=vl, list_choices = current_data))
+    filter(list_name == vl) %>% pull(name) %>% str_c(collapse = " : ")
+  df_grouped_choices <- rbind(df_grouped_choices, data.frame(list_name=vl, choice_options = current_data))
 }
 
-my_dat <- df_choices %>% 
-  filter(list_name == "security_system_present_list") %>% pull(name) %>% 
-  str_c(collapse = " : ")
-
 # extract parent question
-
-df_survey_extract <- df_survey %>% 
-  select(name, type)
 
 df_data_parent_qns <- df_data_arranged %>% 
   mutate(
     parent_qn = str_replace_all(name, "/.*", ""),
     parent_qn = str_replace_all(parent_qn, "_other", "")
   ) %>% 
-  left_join(df_survey_extract, by = c("parent_qn"="name")) %>% 
-  separate(col = type, into = c("selection", "choice_list"), sep =" ", remove = FALSE, extra = "drop" )
+  left_join(df_survey %>% select(name, type), by = c("parent_qn"="name")) %>% 
+  separate(col = type, into = c("select_type", "list_name"), sep =" ", remove = FALSE, extra = "drop" )
 
 # make a join or do a lookup
 
-?separate
+df_join_other_response_with_choices <- df_data_parent_qns %>% 
+  left_join(df_grouped_choices, by = "list_name")
+
 
 # butteR::auto_detect_sm_parents(df_tool_data)
 # ?auto_detect_sm_parents
