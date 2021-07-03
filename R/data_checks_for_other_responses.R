@@ -46,7 +46,7 @@ write_csv(x = df_data_arranged, file = paste0("outputs/others_responses_",as_dat
 
 # add choices to the data -------------------------------------------------
 
-# attach choices to the survey
+# gather choice options based on unique choices list
 df_unique_choices <- df_choices %>% 
   pull(list_name) %>% unique()
 
@@ -58,8 +58,7 @@ for (vl in df_unique_choices) {
   df_grouped_choices <- rbind(df_grouped_choices, data.frame(list_name=vl, choice_options = current_data))
 }
 
-# extract parent question
-
+# extract parent question and join survey for extracting list_name
 df_data_parent_qns <- df_data_arranged %>% 
   mutate(
     parent_qn = str_replace_all(name, "/.*", ""),
@@ -68,27 +67,8 @@ df_data_parent_qns <- df_data_arranged %>%
   left_join(df_survey %>% select(name, type), by = c("parent_qn"="name")) %>% 
   separate(col = type, into = c("select_type", "list_name"), sep =" ", remove = TRUE, extra = "drop" )
 
-# make a join or do a lookup
+# join other responses with choice options based on list_name
 
 df_join_other_response_with_choices <- df_data_parent_qns %>% 
   left_join(df_grouped_choices, by = "list_name")
-
-
-# butteR::auto_detect_sm_parents(df_tool_data)
-# ?auto_detect_sm_parents
-# butteR::check_others(df = df_tool_data, suffix = "_other", report_cols = c("_uuid") )
-# butteR::read_all_csvs_in_folder()
-# 
-# extract_sm_other_responses <- function(.x) {
-#   .x[!is.na(.x)]
-# }
-# 
-# df_check_other_responses <-  df_tool_data %>% 
-#   select(
-#     ends_with("_other")
-#   )
-# 
-# map(.x = df_check_other_responses, .f = extract_sm_other_responses)
-# 
-# map_dfr(.x = df_check_other_responses, .f = extract_sm_other_responses)
 
