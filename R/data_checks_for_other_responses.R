@@ -57,11 +57,14 @@ df_grouped_choices <- data.frame()
 
 for (vl in df_unique_choices) {
   current_data <- df_choices %>% 
-    filter(list_name == vl) %>% select(name) %>% pull() %>% paste(sep = ",")
-  print(current_data)
-  print(vl)
+    filter(list_name == vl) %>% select(name) %>% pull() %>% str_c(collapse = " : ")
   df_grouped_choices <- rbind(df_grouped_choices, data.frame(list_name=vl, list_choices = current_data))
 }
+
+my_dat <- df_choices %>% 
+  filter(list_name == "security_system_present_list") %>% pull(name) %>% 
+  str_c(collapse = " : ")
+
 # extract parent question
 
 df_survey_extract <- df_survey %>% 
