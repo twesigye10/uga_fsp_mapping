@@ -1,5 +1,10 @@
 library(tidyverse)
+library(readxl)
+library(janitor)
 
+# read the log file
+df_cleaning_log <- read_excel("inputs/FSP_KII_cleaning_log_final10082021.xlsx", sheet = "log") %>% 
+  remove_empty("rows")
 
 # check if the name exists in the survey questionnaire
 
