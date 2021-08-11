@@ -4,5 +4,5 @@
 .Ruserdata
 inputs/*
 outputs/*
-support_data/*
+support_docs/*
 !/**/.gitkeep
