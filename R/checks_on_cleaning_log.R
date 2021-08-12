@@ -41,7 +41,7 @@ value_check_so_sm <- df_cl_check_type %>%
 
 # integer
 value_check_int <- df_cl_check_type %>% 
-  filter(qn_type == "integer")
+  filter(qn_type == "integer", str_detect(string = value, pattern = "\\D") )
 
 # create final cleaning log
 
