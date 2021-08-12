@@ -20,6 +20,10 @@ cl_name_not_in_svyr <- df_cleaning_log %>%
   filter(!name %in% questionnaire_names)
 
 # check if all types of change are the expected ones
+df_cl_check_type <- df_cleaning_log %>%
+  left_join(df_cl_survey, by = "name") %>% 
+  mutate(qn_type = str_extract(type.y, pattern = "^[a-zA-Z\\_]*"))
+
 
 # check if the type of change and values are consistent with the type of original question
 # select_one, select_multiple
