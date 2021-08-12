@@ -12,17 +12,9 @@ df_cl_choices <- read_excel("inputs/UGA2103_FSPA_KI_Tool_June.xlsx", sheet = "ch
 
 # gather choice options based on unique choices list ----------------------
 
-df_unique_choices <- df_cl_choices %>% 
-  pull(list_name) %>% unique()
-
-df_grouped_choices <- data.frame()
-
-for (vl in df_unique_choices) {
-  current_data <- df_cl_choices %>% 
-    filter(list_name == vl) %>% pull(name) %>% str_c(collapse = " : ")
-  df_grouped_choices <- rbind(df_grouped_choices, data.frame(list_name=vl, choice_options = current_data))
-}
-
+df_grouped_choices<- df_cl_choices %>% 
+  group_by(list_name) %>% 
+  summarise(choice_options = paste(name, collapse = " : "))
 
 # check if the name exists in the survey questionnaire --------------------
 
