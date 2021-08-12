@@ -32,12 +32,15 @@ type_check_none_sm <- df_cl_check_type %>%
 type_check_sm <- df_cl_check_type %>% 
   filter(qn_type == "select_multiple", `type.x` == "change_response")
 
-# check if the type of change and values are consistent with the type of original question
+
+# check if the values are consistent --------------------------------------
+
 # select_one, select_multiple
+value_check_so_sm <- df_cl_check_type %>% 
+  filter(qn_type %in% c("select_one", "select_multiple"), str_detect(string = value, pattern = " "))
 
 
-
-# check if the value is consistent with other values in that question
+# integer
 
 
 # create final cleaning log
