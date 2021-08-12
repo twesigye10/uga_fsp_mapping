@@ -39,9 +39,9 @@ type_check_sm <- df_cl_check_type %>%
 value_check_so_sm <- df_cl_check_type %>% 
   filter(qn_type %in% c("select_one", "select_multiple"), str_detect(string = value, pattern = " "))
 
-
 # integer
-
+value_check_int <- df_cl_check_type %>% 
+  filter(qn_type == "integer")
 
 # create final cleaning log
 
