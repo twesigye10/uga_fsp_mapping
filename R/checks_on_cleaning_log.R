@@ -42,6 +42,13 @@ df_cl_type_check_sm <- df_cl_check_type %>%
 
 # check if the values are consistent --------------------------------------
 
+# option exists, check provided value in the log
+df_cl_value_check_option_exists_so_sm <- df_cl_check_type %>% 
+  filter(qn_type %in% c("select_one", "select_multiple"), Issue == "option_exists") %>% 
+  separate(col = type.y, into = c("select_type", "list_name"), sep =" ", remove = TRUE, extra = "drop" ) %>% 
+  left_join(df_grouped_choices, by = "list_name") %>% 
+  filter(!str_detect(string = choice_options, pattern = value))
+
 # select_one, select_multiple
 df_cl_value_check_so_sm <- df_cl_check_type %>% 
   filter(qn_type %in% c("select_one", "select_multiple"), str_detect(string = value, pattern = "[ ]|[:upper:]"))
