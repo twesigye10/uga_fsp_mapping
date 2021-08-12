@@ -64,9 +64,9 @@ df_cl_value_check_option_exists_so_sm <- df_cl_check_type %>%
     identified_issue_for_final_log = "suggested option not in the tool"
   )
 
-# select_one, select_multiple
-df_cl_value_check_so_sm <- df_cl_check_type %>% 
-  filter(qn_type %in% c("select_one", "select_multiple"), str_detect(string = value, pattern = "[ ]|[:upper:]"))
+# # select_one, select_multiple
+# df_cl_value_check_so_sm <- df_cl_check_type %>% 
+#   filter(qn_type %in% c("select_one", "select_multiple"), str_detect(string = value, pattern = "[ ]|[:upper:]"))
 
 # integer
 df_cl_value_check_int <- df_cl_check_type %>% 
