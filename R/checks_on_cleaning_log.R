@@ -9,7 +9,22 @@ df_cleaning_log <- read_excel("inputs/FSP_KII_cleaning_log_final10082021.xlsx", 
 df_cl_survey <- read_excel("inputs/UGA2103_FSPA_KI_Tool_June.xlsx", sheet = "survey") 
 df_cl_choices <- read_excel("inputs/UGA2103_FSPA_KI_Tool_June.xlsx", sheet = "choices") 
 
-# check if the name exists in the survey questionnaire
+
+# gather choice options based on unique choices list ----------------------
+
+df_unique_choices <- df_cl_choices %>% 
+  pull(list_name) %>% unique()
+
+df_grouped_choices <- data.frame()
+
+for (vl in df_unique_choices) {
+  current_data <- df_cl_choices %>% 
+    filter(list_name == vl) %>% pull(name) %>% str_c(collapse = " : ")
+  df_grouped_choices <- rbind(df_grouped_choices, data.frame(list_name=vl, choice_options = current_data))
+}
+
+
+# check if the name exists in the survey questionnaire --------------------
 
 questionnaire_names <- df_cl_survey %>% 
   filter(str_length(name) > 2) %>% 
