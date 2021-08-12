@@ -16,7 +16,7 @@ questionnaire_names <- df_cl_survey %>%
   pull(name) %>% 
   unique()
 
-cl_name_not_in_svyr <- df_cleaning_log %>% 
+df_cl_name_not_in_svyr <- df_cleaning_log %>% 
   filter(!name %in% questionnaire_names)
 
 
@@ -26,21 +26,21 @@ df_cl_check_type <- df_cleaning_log %>%
   left_join(df_cl_survey, by = "name") %>% 
   mutate(qn_type = str_extract(type.y, pattern = "^[a-zA-Z\\_]*"))
 # none select_multiple and not having "change_response" as the type of change
-type_check_none_sm <- df_cl_check_type %>% 
+df_cl_type_check_none_sm <- df_cl_check_type %>% 
   filter(qn_type != "select_multiple", `type.x` != "change_response") 
 # select_multiple and having "change_response" as the type of change
-type_check_sm <- df_cl_check_type %>% 
+df_cl_type_check_sm <- df_cl_check_type %>% 
   filter(qn_type == "select_multiple", `type.x` == "change_response")
 
 
 # check if the values are consistent --------------------------------------
 
 # select_one, select_multiple
-value_check_so_sm <- df_cl_check_type %>% 
-  filter(qn_type %in% c("select_one", "select_multiple"), str_detect(string = value, pattern = " "))
+df_cl_value_check_so_sm <- df_cl_check_type %>% 
+  filter(qn_type %in% c("select_one", "select_multiple"), str_detect(string = value, pattern = "[ ]|[:upper:]"))
 
 # integer
-value_check_int <- df_cl_check_type %>% 
+df_cl_value_check_int <- df_cl_check_type %>% 
   filter(qn_type == "integer", str_detect(string = value, pattern = "\\D") )
 
 # create final cleaning log
