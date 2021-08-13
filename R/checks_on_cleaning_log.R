@@ -33,6 +33,14 @@ df_cl_name_not_in_svyr <- df_cleaning_log %>%
   ) %>% 
   select(starts_with("i."))
 
+# names not having parent qn name
+df_cl_name_not_parent_qn <- df_cleaning_log %>% 
+  filter(str_detect(string = i.name, pattern = "_other$")) %>% 
+  mutate(
+    i.identified_issue_for_final_log = "name not_parent_qn"
+  ) %>% 
+  select(starts_with("i."))
+
 
 # check if all types of change are the expected ones ----------------------
 
@@ -83,11 +91,12 @@ df_cl_value_check_int <- df_cl_check_type %>%
   )%>% 
   select(starts_with("i."))
 
+
 # create final cleaning log
 
 df_cl_issues_combined <- bind_rows(
-  df_cl_name_not_in_svyr, df_cl_type_check_none_sm, df_cl_type_check_sm, 
-  df_cl_value_check_option_exists_so_sm, df_cl_value_check_int
+  df_cl_name_not_in_svyr, df_cl_name_not_parent_qn, df_cl_type_check_none_sm, 
+  df_cl_type_check_sm, df_cl_value_check_option_exists_so_sm, df_cl_value_check_int
 ) %>% 
   rename_with(~str_replace(.x, pattern = "i.", replacement = ""))
 
