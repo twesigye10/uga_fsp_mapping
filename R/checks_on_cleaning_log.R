@@ -4,7 +4,8 @@ library(janitor)
 
 # read in data
 df_cleaning_log <- read_excel("inputs/FSP_KII_cleaning_log_final12082021.xlsx", sheet = "log") %>% 
-  remove_empty("rows")
+  remove_empty("rows") %>% 
+  rename_with(.fn = ~paste0("i.", .x))
 
 df_cl_survey <- read_excel("inputs/UGA2103_FSP_Tool_June2021_Final_2021_08_12.xlsx", sheet = "survey") 
 df_cl_choices <- read_excel("inputs/UGA2103_FSP_Tool_June2021_Final_2021_08_12.xlsx", sheet = "choices") 
@@ -74,3 +75,7 @@ df_cl_value_check_int <- df_cl_check_type %>%
 
 # create final cleaning log
 
+df_cl_issues_combined <- bind_rows(
+  df_cl_name_not_in_svyr, df_cl_type_check_none_sm, df_cl_type_check_sm, 
+  df_cl_value_check_option_exists_so_sm, df_cl_value_check_int
+) 
