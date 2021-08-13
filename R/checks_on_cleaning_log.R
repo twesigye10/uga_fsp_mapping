@@ -4,7 +4,7 @@ library(janitor)
 library(lubridate)
 
 # read in data
-df_cleaning_log <- read_excel("inputs/FSP_KII_cleaning_log_final12082021.xlsx", sheet = "log") %>% 
+df_cleaning_log <- read_excel("inputs/FSP_KII_cleaning_log_final13082021.xlsx", sheet = "log") %>% 
   remove_empty("rows") %>% 
   # mutate(Date = lubridate::as_date(Date) )
   rename_with(.fn = ~paste0("i.", .x))
