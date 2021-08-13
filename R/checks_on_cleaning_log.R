@@ -63,7 +63,7 @@ df_cl_value_check_option_exists_so_sm <- df_cl_check_type %>%
                       "wrong entry", "Respondent not based in any district?", "not clear", "information needed")) %>% 
   separate(col = i.type, into = c("select_type", "list_name"), sep =" ", remove = TRUE, extra = "drop" ) %>% 
   left_join(df_grouped_choices, by = "list_name") %>% 
-  filter(!str_detect(string = choice_options, pattern = value)) %>% 
+  filter(!str_detect(string = choice_options, pattern = i.value)) %>% 
   mutate(
     i.identified_issue_for_final_log = "suggested option not in the tool"
   )%>% 
@@ -75,7 +75,7 @@ df_cl_value_check_option_exists_so_sm <- df_cl_check_type %>%
 
 # integer
 df_cl_value_check_int <- df_cl_check_type %>% 
-  filter(int.qn_type == "integer", str_detect(string = value, pattern = "\\D") ) %>% 
+  filter(int.qn_type == "integer", str_detect(string = i.value, pattern = "\\D") ) %>% 
   mutate(
     i.identified_issue_for_final_log = "value does not correspond to integer qn type"
   )%>% 
@@ -86,4 +86,5 @@ df_cl_value_check_int <- df_cl_check_type %>%
 df_cl_issues_combined <- bind_rows(
   df_cl_name_not_in_svyr, df_cl_type_check_none_sm, df_cl_type_check_sm, 
   df_cl_value_check_option_exists_so_sm, df_cl_value_check_int
-) 
+) %>% 
+  rename_with(~str_replace(.x, pattern = "i.", replacement = ""))
