@@ -61,12 +61,12 @@ df_cl_value_check_option_exists_so_sm <- df_cl_check_type %>%
          i.Issue %in% c("option_exists", "wrong name", "Not filled", "recode other",
                       "Recode other", "wrong name",
                       "wrong entry", "Respondent not based in any district?", "not clear", "information needed")) %>% 
-  separate(col = i.type, into = c("select_type", "list_name"), sep =" ", remove = TRUE, extra = "drop" ) %>% 
-  left_join(df_grouped_choices, by = "list_name") %>% 
-  filter(!str_detect(string = choice_options, pattern = i.value)) %>% 
+  separate(col = type, into = c("select_type", "list_name"), sep =" ", remove = TRUE, extra = "drop" ) %>% 
+  left_join(df_grouped_choices, by = "list_name") %>%
+  filter(!str_detect(string = choice_options, pattern = i.value ) ) %>%
   mutate(
-    i.identified_issue_for_final_log = "suggested option not in the tool"
-  )%>% 
+    i.identified_issue_for_final_log = "suggested option not in the tool or in wrong case"
+  )%>%
   select(starts_with("i."))
 
 # # select_one, select_multiple
