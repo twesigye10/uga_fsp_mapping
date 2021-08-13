@@ -25,28 +25,28 @@ questionnaire_names <- df_cl_survey %>%
   unique()
 
 df_cl_name_not_in_svyr <- df_cleaning_log %>% 
-  filter(!name %in% questionnaire_names) %>% 
+  filter(!i.name %in% questionnaire_names) %>% 
   mutate(
-    identified_issue_for_final_log = "name not_in_survey"
+    i.identified_issue_for_final_log = "name not_in_survey"
   )
 
 
 # check if all types of change are the expected ones ----------------------
 
 df_cl_check_type <- df_cleaning_log %>%
-  left_join(df_cl_survey, by = "name") %>% 
-  mutate(qn_type = str_extract(type.y, pattern = "^[a-zA-Z\\_]*"))
+  left_join(df_cl_survey, by = c("i.name" = "name")) %>% 
+  mutate(int.qn_type = str_extract(type, pattern = "^[a-zA-Z\\_]*"))
 # none select_multiple and not having "change_response" as the type of change
 df_cl_type_check_none_sm <- df_cl_check_type %>% 
-  filter(qn_type != "select_multiple", `type.x` != "change_response") %>% 
+  filter(int.qn_type != "select_multiple", i.type != "change_response") %>% 
   mutate(
-    identified_issue_for_final_log = "type not for this type of question "
+    i.identified_issue_for_final_log = "type not for this type of question "
   )
 # select_multiple and having "change_response" as the type of change
 df_cl_type_check_sm <- df_cl_check_type %>% 
-  filter(qn_type == "select_multiple", `type.x` == "change_response") %>% 
+  filter(int.qn_type == "select_multiple", i.type == "change_response") %>% 
   mutate(
-    identified_issue_for_final_log = "type not for this type of question "
+    i.identified_issue_for_final_log = "type not for this type of question "
   )
 
 
@@ -54,24 +54,27 @@ df_cl_type_check_sm <- df_cl_check_type %>%
 
 # option exists, check provided value in the log
 df_cl_value_check_option_exists_so_sm <- df_cl_check_type %>% 
-  filter(qn_type %in% c("select_one", "select_multiple"), 
-         Issue %in% c("option_exists", "wrong name", "Not filled", "recode other",
+  filter(int.qn_type %in% c("select_one", "select_multiple"), 
+         i.Issue %in% c("option_exists", "wrong name", "Not filled", "recode other",
                       "Recode other", "wrong name",
                       "wrong entry", "Respondent not based in any district?", "not clear", "information needed")) %>% 
-  separate(col = type.y, into = c("select_type", "list_name"), sep =" ", remove = TRUE, extra = "drop" ) %>% 
+  separate(col = i.type, into = c("select_type", "list_name"), sep =" ", remove = TRUE, extra = "drop" ) %>% 
   left_join(df_grouped_choices, by = "list_name") %>% 
   filter(!str_detect(string = choice_options, pattern = value)) %>% 
   mutate(
-    identified_issue_for_final_log = "suggested option not in the tool"
+    i.identified_issue_for_final_log = "suggested option not in the tool"
   )
 
 # # select_one, select_multiple
 # df_cl_value_check_so_sm <- df_cl_check_type %>% 
-#   filter(qn_type %in% c("select_one", "select_multiple"), str_detect(string = value, pattern = "[ ]|[:upper:]"))
+#   filter(int.qn_type %in% c("select_one", "select_multiple"), str_detect(string = value, pattern = "[ ]|[:upper:]"))
 
 # integer
 df_cl_value_check_int <- df_cl_check_type %>% 
-  filter(qn_type == "integer", str_detect(string = value, pattern = "\\D") )
+  filter(int.qn_type == "integer", str_detect(string = value, pattern = "\\D") ) %>% 
+  mutate(
+    i.identified_issue_for_final_log = "value does not correspond to integer qn type"
+  )
 
 # create final cleaning log
 
