@@ -1,10 +1,12 @@
 library(tidyverse)
 library(readxl)
 library(janitor)
+library(lubridate)
 
 # read in data
 df_cleaning_log <- read_excel("inputs/FSP_KII_cleaning_log_final12082021.xlsx", sheet = "log") %>% 
   remove_empty("rows") %>% 
+  # mutate(Date = lubridate::as_date(Date) )
   rename_with(.fn = ~paste0("i.", .x))
 
 df_cl_survey <- read_excel("inputs/UGA2103_FSP_Tool_June2021_Final_2021_08_12.xlsx", sheet = "survey") 
@@ -88,3 +90,5 @@ df_cl_issues_combined <- bind_rows(
   df_cl_value_check_option_exists_so_sm, df_cl_value_check_int
 ) %>% 
   rename_with(~str_replace(.x, pattern = "i.", replacement = ""))
+
+write_csv(df_cl_issues_combined, file = paste0("outputs/cleaning_log_issues_to_be_addressed_",as_date(today()),"_", hour(now()) ,".csv"))
