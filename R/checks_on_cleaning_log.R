@@ -28,7 +28,8 @@ df_cl_name_not_in_svyr <- df_cleaning_log %>%
   filter(!i.name %in% questionnaire_names) %>% 
   mutate(
     i.identified_issue_for_final_log = "name not_in_survey"
-  )
+  ) %>% 
+  select(starts_with("i."))
 
 
 # check if all types of change are the expected ones ----------------------
@@ -41,13 +42,15 @@ df_cl_type_check_none_sm <- df_cl_check_type %>%
   filter(int.qn_type != "select_multiple", i.type != "change_response") %>% 
   mutate(
     i.identified_issue_for_final_log = "type not for this type of question "
-  )
+  )%>% 
+  select(starts_with("i."))
 # select_multiple and having "change_response" as the type of change
 df_cl_type_check_sm <- df_cl_check_type %>% 
   filter(int.qn_type == "select_multiple", i.type == "change_response") %>% 
   mutate(
     i.identified_issue_for_final_log = "type not for this type of question "
-  )
+  )%>% 
+  select(starts_with("i."))
 
 
 # check if the values are consistent --------------------------------------
@@ -63,7 +66,8 @@ df_cl_value_check_option_exists_so_sm <- df_cl_check_type %>%
   filter(!str_detect(string = choice_options, pattern = value)) %>% 
   mutate(
     i.identified_issue_for_final_log = "suggested option not in the tool"
-  )
+  )%>% 
+  select(starts_with("i."))
 
 # # select_one, select_multiple
 # df_cl_value_check_so_sm <- df_cl_check_type %>% 
@@ -74,7 +78,8 @@ df_cl_value_check_int <- df_cl_check_type %>%
   filter(int.qn_type == "integer", str_detect(string = value, pattern = "\\D") ) %>% 
   mutate(
     i.identified_issue_for_final_log = "value does not correspond to integer qn type"
-  )
+  )%>% 
+  select(starts_with("i."))
 
 # create final cleaning log
 
