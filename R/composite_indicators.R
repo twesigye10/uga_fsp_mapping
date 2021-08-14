@@ -55,6 +55,20 @@ df_tool_data <- df_tool_data %>%
                                        yes_operate_presence == 999 ~      "999",
                                        yes_operate_presence >= 1000 ~      "100 +",
                                        TRUE ~ "999"
+    ),
+    i.transfer_value_cat = case_when(large_prog_transfer_value == 0 ~ "0",
+                                     large_prog_transfer_value >= 1 & large_prog_transfer_value <= 998 ~   "1 - 10000000",
+                                     large_prog_transfer_value == 999 ~      "999",
+                                     large_prog_transfer_value >= 1000 & large_prog_transfer_value <= 10000000 ~   "1 - 10000000",
+                                     large_prog_transfer_value >= 10000001 & large_prog_transfer_value <= 20000000 ~  "10000001 - 20000000",
+                                     large_prog_transfer_value >= 20000001 & large_prog_transfer_value <= 50000000 ~  "20000001 - 50000000",
+                                     large_prog_transfer_value >= 50000001 & large_prog_transfer_value <= 100000000 ~  "50000001 - 100000000",
+                                     large_prog_transfer_value >= 100000001 & large_prog_transfer_value <= 200000000 ~  "100000001 - 200000000",
+                                     large_prog_transfer_value >= 200000001 & large_prog_transfer_value <= 500000000 ~  "200000001 - 500000000",
+                                     large_prog_transfer_value >= 500000001 & large_prog_transfer_value <= 1000000000 ~ "500000001 - 1000000000",
+                                     large_prog_transfer_value > 1000000000  ~    "1000000000 +",
+                                     TRUE ~ "999"
+                                     
     )
     
   )
