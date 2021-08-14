@@ -98,22 +98,25 @@ create_composite_indicators_fsp <- function(input_df) {
 }
 
 
-df_tool_data %>% 
+
+df_updated_data <- create_composite_indicators_fsp(df_tool_data)
+
+df_updated_data %>% 
   tabyl(i.number_agents_cat) 
 
-df_tool_data %>% 
+df_updated_data %>% 
   tabyl(i.region)
 
-df_tool_data %>% 
+df_updated_data %>% 
   tabyl(i.settlement_presence) 
 
-df_tool_data %>% 
+df_updated_data %>% 
   tabyl(i.operate_presence_cat)  
 
-df_tool_data %>% 
+df_updated_data %>% 
   tabyl(i.transfer_value_cat)
 
-df_tool_data %>% 
+df_updated_data %>% 
   tabyl(i.transfer_value_cat)
 
 
