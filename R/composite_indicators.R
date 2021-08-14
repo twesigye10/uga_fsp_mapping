@@ -40,7 +40,7 @@ df_tool_data <- df_tool_data %>%
                                     number_agents >= 501 &  number_agents <= 998 ~ "500+",
                                     number_agents == 999 ~ "999",
                                     number_agents >= 1000  ~ "500 +",
-                                    TRUE ~ "999"
+                                    TRUE ~ "NA"
     ),
     i.region = recode(refugee_settlelement, !!!region_lookup),
     i.settlement_presence = case_when(refugee_settle_operate == "no_presence" ~ "no",
@@ -61,7 +61,7 @@ df_tool_data <- df_tool_data %>%
                                        yes_operate_presence >= 101 & yes_operate_presence <= 998 ~    "100 +",
                                        yes_operate_presence == 999 ~      "999",
                                        yes_operate_presence >= 1000 ~      "100 +",
-                                       TRUE ~ "999"
+                                       TRUE ~ "NA"
     ),
     i.transfer_value_cat = case_when(large_prog_transfer_value == 0 ~ "0",
                                      large_prog_transfer_value >= 1 & large_prog_transfer_value <= 998 ~   "1 - 10000000",
@@ -74,7 +74,7 @@ df_tool_data <- df_tool_data %>%
                                      large_prog_transfer_value >= 200000001 & large_prog_transfer_value <= 500000000 ~  "200000001 - 500000000",
                                      large_prog_transfer_value >= 500000001 & large_prog_transfer_value <= 1000000000 ~ "500000001 - 1000000000",
                                      large_prog_transfer_value > 1000000000  ~    "1000000000 +",
-                                     TRUE ~ "999"
+                                     TRUE ~ "NA"
                                      
     ),
     i.agent_increment_cat = case_when(agent_increment_ability_yes == 0 ~ "0",
@@ -88,11 +88,27 @@ df_tool_data <- df_tool_data %>%
                                       agent_increment_ability_yes >= 101 &  agent_increment_ability_yes <= 998 ~ "100 +",
                                       agent_increment_ability_yes == 999 ~ "999",
                                       agent_increment_ability_yes >= 1000  ~ "100 +",
-                                      TRUE ~ "999"
+                                      TRUE ~ "NA"
     )
     
   )
 
 df_tool_data %>% 
-  tabyl(i.agent_increment_cat)
+  tabyl(i.number_agents_cat) 
+
+df_tool_data %>% 
+  tabyl(i.region)
+  
+df_tool_data %>% 
+  tabyl(i.settlement_presence) 
+  
+df_tool_data %>% 
+  tabyl(i.operate_presence_cat)  
+  
+df_tool_data %>% 
+  tabyl(i.transfer_value_cat)
+ 
+df_tool_data %>% 
+  tabyl(i.transfer_value_cat)
+  
 
