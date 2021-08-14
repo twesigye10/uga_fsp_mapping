@@ -8,7 +8,27 @@ library(lubridate)
 # read data
 df_tool_data <- read_csv("inputs/UGA2103_FSP_Assessment_Raw_data_aug_final.xlsx")
 
-df_tool_data %>% 
+settlement_regroup <- tibble::tribble(
+                      ~settlement,      ~region,
+                       "adjumani",  "west nile",
+                       "bidibidi",  "west nile",
+                         "imvepi",  "west nile",
+                    "kiryandongo",  "west nile",
+                          "kyaka", "south west",
+                      "kyangwali", "south west",
+                         "lobule",  "west nile",
+                       "nakivale", "south west",
+                      "oruchinga", "south west",
+                        "palabek",  "west nile",
+                      "palorinya",  "west nile",
+                          "rhino",  "west nile",
+                      "rwamwanja", "south west"
+                    )
+
+region_lookup <- setNames(object = settlement_regroup$region, nm = settlement_regroup$settlement)
+
+
+df_tool_data <- df_tool_data %>% 
   mutate(
     i.number_agents_cat = case_when(
       number_agents == 0 ~ "0",
@@ -21,5 +41,8 @@ df_tool_data %>%
       number_agents >= 501 &  number_agents <= 998 ~ "500+",
       number_agents == 999 ~ "999",
       number_agents >= 1000  ~ "500+",
-    )
+      TRUE ~ as.character(number_agents)
+    ),
+    i.region = recode(refugee_settlelement, !!!region_lookup)
   )
+
