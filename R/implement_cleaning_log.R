@@ -28,8 +28,16 @@ new_vars <- df_cleaning_log %>%
   distinct() %>% # to make sure there are no duplicates
   arrange(name)
 
-# add new choices to the survey tool --------------------------------------
 
+# create kobold object ----------------------------------------------------
+
+kbo <- kobold::kobold(survey = df_survey, 
+                      choices = df_choices, 
+                      data = df_survey, 
+                      cleaning = df_cleaning_log)
+
+# modified choices for the survey tool --------------------------------------
+kc_modified <- butteR:::xlsform_add_choices(kobold = kbo, new_choices = new_vars)
 
 # modify the data using the cleaning log ----------------------------------
 
