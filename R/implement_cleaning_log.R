@@ -64,6 +64,6 @@ kbo_modified <- kobold::kobold(survey = df_survey,
                                cleaning = df_cleaning_log )
 kbo_cleaned<- kobold::kobold_cleaner(kbo_modified)
 
-# write modified data -----------------------------------------------------
+# write final modified data -----------------------------------------------------
 
-
+write_csv(kbo_cleaned$data,file = paste0("outputs/", butteR::date_file_prefix(), "_clean_data.csv"))
