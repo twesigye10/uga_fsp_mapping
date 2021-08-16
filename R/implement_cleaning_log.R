@@ -37,7 +37,7 @@ kbo <- kobold::kobold(survey = df_survey,
                       cleaning = df_cleaning_log)
 
 # modified choices for the survey tool --------------------------------------
-kc_modified <- butteR:::xlsform_add_choices(kobold = kbo, new_choices = new_vars)
+df_choises_modified <- butteR:::xlsform_add_choices(kobold = kbo, new_choices = new_vars)
 
 # special treat for variables for select_multiple, we need to add the columns to the data itself
 df_survey_sm <- df_survey %>% 
@@ -54,11 +54,15 @@ new_vars_sm <- new_vars %>%
 
 # add new columns to the raw data -----------------------------------------
 
-df_modified_raw_data <- df_raw_data %>% 
+df_raw_data_modified <- df_raw_data %>% 
   butteR:::mutate_batch(nm = new_vars_sm$new_cols, value = F )
 
 # make some cleanup -------------------------------------------------------
-
+kbo_modified <- kobold::kobold(survey = df_survey, 
+                               choices = df_choises_modified, 
+                               data = df_raw_data_modified, 
+                               cleaning = df_cleaning_log )
+kbo_cleaned<- kobold::kobold_cleaner(kbo_modified)
 
 # write modified data -----------------------------------------------------
 
