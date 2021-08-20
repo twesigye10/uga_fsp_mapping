@@ -34,7 +34,7 @@ new_vars <- df_cleaning_log %>%
 
 kbo <- kobold::kobold(survey = df_survey, 
                       choices = df_choices, 
-                      data = df_survey, 
+                      data = df_raw_data, 
                       cleaning = df_cleaning_log)
 
 # modified choices for the survey tool --------------------------------------
