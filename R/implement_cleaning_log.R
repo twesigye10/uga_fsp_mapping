@@ -45,11 +45,11 @@ df_survey_sm <- df_survey %>%
   mutate(q_type = case_when(str_detect(string = type, pattern = "select_multiple|select multiple") ~ "sm",
                             str_detect(string = type, pattern = "select_one|select one") ~ "so",
                             TRUE ~ type)) %>% 
-  filter(q_type=="sm") %>% 
   select(name, q_type)
 # construct new columns for select multiple
 new_vars_sm <- new_vars %>% 
   left_join(df_survey_sm, by = "name") %>% 
+  filter(q_type=="sm") %>% 
   mutate(new_cols=paste0(name,"/",choice))
 
 
@@ -59,7 +59,7 @@ df_raw_data_modified <- df_raw_data %>%
   butteR:::mutate_batch(nm = new_vars_sm$new_cols, value = F )
 
 # make some cleanup -------------------------------------------------------
-kbo_modified <- kobold::kobold(survey = df_survey, 
+kbo_modified <- kobold::kobold(survey = df_survey %>% filter(name %in% colnames(df_raw_data_modified)), 
                                choices = df_choises_modified, 
                                data = df_raw_data_modified, 
                                cleaning = df_cleaning_log )
