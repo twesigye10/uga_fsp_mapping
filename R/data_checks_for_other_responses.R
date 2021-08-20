@@ -7,11 +7,10 @@ library(butteR)
 
 
 # read data ---------------------------------------------------------------
-df_tool_data <- read_csv("inputs/UGA2103_Financial_Service_Providers_Assessment_KI_Tool_June2021.csv")
 
-df_survey <- read_csv("inputs/survey.csv")
-
-df_choices <- read_csv("inputs/choices.csv")
+df_tool_data <- readxl::read_excel("inputs/UGA2103_FSP_Assessment_Raw_data_aug_final.xlsx")
+df_survey <- readxl::read_excel("inputs/UGA2103_FSP_Tool_June2021_Final_2021_08_20.xlsx", sheet = "survey") 
+df_choices <- readxl::read_excel("inputs/UGA2103_FSP_Tool_June2021_Final_2021_08_20.xlsx", sheet = "choices") 
 
 # All “other” responses should be flagged ---------------------------------
 # - identify them
