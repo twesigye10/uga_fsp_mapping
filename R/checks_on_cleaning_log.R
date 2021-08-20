@@ -9,8 +9,8 @@ df_cleaning_log <- read_excel("inputs/FSP_KII_cleaning_log_final13082021.xlsx", 
   # mutate(Date = lubridate::as_date(Date) )
   rename_with(.fn = ~paste0("i.", .x))
 
-df_cl_survey <- read_excel("inputs/UGA2103_FSP_Tool_June2021_Final_2021_08_12.xlsx", sheet = "survey") 
-df_cl_choices <- read_excel("inputs/UGA2103_FSP_Tool_June2021_Final_2021_08_12.xlsx", sheet = "choices") 
+df_cl_survey <- read_excel("inputs/UGA2103_FSP_Tool_June2021_Final_2021_08_20.xlsx", sheet = "survey") 
+df_cl_choices <- read_excel("inputs/UGA2103_FSP_Tool_June2021_Final_2021_08_20.xlsx", sheet = "choices") 
 
 
 # gather choice options based on unique choices list ----------------------
