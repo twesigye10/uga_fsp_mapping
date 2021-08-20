@@ -9,8 +9,8 @@ df_cleaning_log <- readxl::read_excel("inputs/FSP_KII_cleaning_log_final13082021
   mutate(issue_id = str_replace_all(string = issue_id, pattern = " ", replacement = "_"), sheet = NA, index = NA, relevant = NA) %>% 
   select(uuid, type, name, value, issue_id, sheet, index, relevant, issue)
 df_raw_data <- readxl::read_excel("inputs/UGA2103_FSP_Assessment_Raw_data_aug_final.xlsx")
-df_survey <- readxl::read_excel("inputs/UGA2103_FSP_Tool_June2021_Final_2021_08_12.xlsx", sheet = "survey") 
-df_choices <- readxl::read_excel("inputs/UGA2103_FSP_Tool_June2021_Final_2021_08_12.xlsx", sheet = "choices") 
+df_survey <- readxl::read_excel("inputs/UGA2103_FSP_Tool_June2021_Final_2021_08_20.xlsx", sheet = "survey") 
+df_choices <- readxl::read_excel("inputs/UGA2103_FSP_Tool_June2021_Final_2021_08_20.xlsx", sheet = "choices") 
 
 # find all new choices to add to choices sheet ----------------------------
 
