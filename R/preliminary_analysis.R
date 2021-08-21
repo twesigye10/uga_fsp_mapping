@@ -19,4 +19,9 @@ df_with_composites <- create_composite_indicators_fsp(input_df = df_cleaned)
 
 # analysis ----------------------------------------------------------------
 
+#  select variables from dap that are in the dataset
 variables_to_analyse <- dap$variable[dap$variable %in% colnames(df_with_composites)]
+
+# convert df to a survey using the srvyr package
+df_svy <- as_survey(df_with_composites)
+
