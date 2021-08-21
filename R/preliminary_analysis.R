@@ -11,3 +11,8 @@ df_cleaned <- read_csv("outputs/20210820_clean_data.csv")
 
 dap <- read_csv("inputs/r_dap.csv") %>% 
   janitor::clean_names()
+
+
+# make composite indicator ------------------------------------------------
+
+df_with_composites <- create_composite_indicators_fsp(input_df = df_cleaned)
