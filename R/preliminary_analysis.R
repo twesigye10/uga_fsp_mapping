@@ -55,10 +55,22 @@ for (i in seq_along(dap_all_subset_split)) {
 }
 
 outputs$overall_subset1 <- bind_rows(overall_subset1) %>% 
-  mutate(analysis_level = "by_subset")
+  mutate(analysis_level = "by_subset_1")
 
 # merge all analysis
 full_analysis_long<- bind_rows(outputs)
 # write the output analysis
 full_analysis_long %>%
   write_csv(paste0("outputs/", butteR::date_file_prefix(),"_full_analysis_long_format.csv"),na="")
+
+
+# plots -------------------------------------------------------------------
+
+# some graphs for the analysis
+analysis_levels <- c("overall", "by_subset_1")
+
+analysis_level_plots <- list()
+
+for (i in seq_along(analysis_levels)) {
+  
+}
