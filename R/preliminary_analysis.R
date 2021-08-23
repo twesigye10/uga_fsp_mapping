@@ -51,8 +51,11 @@ for (i in seq_along(dap_all_subset_split)) {
   vars_temp <- subset_temp %>% pull(variable)
   overall_subset1[[subset_value]] <- butteR::survey_collapse(df = df_svy,
                                                              vars_to_analyze = vars_temp, 
-                                                             disag = c(subset_value)) %>% 
-    mutate(analysis_level = subset_value)
+                                                             disag = c(subset_value)) 
 }
 
-outputs$overall_subset1 <- bind_rows(overall_subset1)
+outputs$overall_subset1 <- bind_rows(overall_subset1) %>% 
+  mutate(analysis_level = "by_subset")
+
+# merge all analysis
+full_analysis_long<- bind_rows(outputs)
