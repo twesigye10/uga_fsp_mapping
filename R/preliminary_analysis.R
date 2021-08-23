@@ -59,3 +59,6 @@ outputs$overall_subset1 <- bind_rows(overall_subset1) %>%
 
 # merge all analysis
 full_analysis_long<- bind_rows(outputs)
+# write the output analysis
+full_analysis_long %>%
+  write_csv(paste0("outputs/", butteR::date_file_prefix(),"_full_analysis_long_format.csv"),na="")
