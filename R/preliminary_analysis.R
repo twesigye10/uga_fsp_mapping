@@ -26,4 +26,14 @@ variables_to_analyse <- dap$variable[dap$variable %in% colnames(df_with_composit
 df_svy <- as_survey(df_with_composites)
 
 over_all_analysis <- butteR::survey_collapse(df = df_svy,
-                                             vars_to_analyze = variables_to_analyse)
+                                             vars_to_analyze = variables_to_analyse) %>% 
+  mutate(analysis_level = "overall")
+
+# split analysis
+dap_all_subset <- dap %>% 
+  filter(split %in% c("All", "ref_only"), !is.na(subset_1))
+
+# overall, subset_1
+
+dap_all_subset_split <- dap_all_subset %>% 
+  split(.$subset_1)
