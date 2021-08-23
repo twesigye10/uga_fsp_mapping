@@ -25,11 +25,15 @@ variables_to_analyse <- dap$variable[dap$variable %in% colnames(df_with_composit
 # convert df to a survey using the srvyr package
 df_svy <- as_survey(df_with_composites)
 
-over_all_analysis <- butteR::survey_collapse(df = df_svy,
+# outputs list
+outputs <- list()
+
+# overall analysis
+outputs$over_all_analysis <- butteR::survey_collapse(df = df_svy,
                                              vars_to_analyze = variables_to_analyse) %>% 
   mutate(analysis_level = "overall")
 
-# split analysis
+# split analysis by subset_1
 dap_all_subset <- dap %>% 
   filter(split %in% c("All", "ref_only"), !is.na(subset_1))
 
@@ -37,3 +41,18 @@ dap_all_subset <- dap %>%
 
 dap_all_subset_split <- dap_all_subset %>% 
   split(.$subset_1)
+
+overall_subset1<-list()
+
+for (i in seq_along(dap_all_subset_split)) {
+  print(i)
+  subset_temp <- dap_all_subset_split[[i]]
+  subset_value <- unique(subset_temp$subset_1)
+  vars_temp <- subset_temp %>% pull(variable)
+  overall_subset1[[subset_value]] <- butteR::survey_collapse(df = df_svy,
+                                                             vars_to_analyze = vars_temp, 
+                                                             disag = c(subset_value)) %>% 
+    mutate(analysis_level = subset_value)
+}
+
+outputs$overall_subset1 <- bind_rows(overall_subset1)
