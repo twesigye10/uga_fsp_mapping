@@ -25,3 +25,5 @@ variables_to_analyse <- dap$variable[dap$variable %in% colnames(df_with_composit
 # convert df to a survey using the srvyr package
 df_svy <- as_survey(df_with_composites)
 
+over_all_analysis <- butteR::survey_collapse(df = df_svy,
+                                             vars_to_analyze = variables_to_analyse)
