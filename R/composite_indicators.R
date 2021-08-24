@@ -15,7 +15,7 @@ create_composite_indicators_fsp <- function(input_df) {
     "bidibidi",  "west nile",
     "imvepi",  "west nile",
     "kiryandongo",  "west nile",
-    "kyaka", "south west",
+    "kyaka II", "south west",
     "kyangwali", "south west",
     "lobule",  "west nile",
     "nakivale", "south west",
