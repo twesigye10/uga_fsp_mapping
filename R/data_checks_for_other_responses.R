@@ -42,22 +42,22 @@ df_data_arranged <- df_other_response_data %>%
 
 # add choices to the data -------------------------------------------------
 
-# gather choice options based on unique choices list
-df_unique_choices <- df_choices %>% 
-  pull(list_name) %>% unique()
-
-df_grouped_choices <- tibble()
-
-for (vl in df_unique_choices) {
-  current_data <- df_choices %>% 
-    filter(list_name == vl) %>% pull(name) %>% str_c(collapse = " : ")
-  df_grouped_choices <- bind_rows(df_grouped_choices, tibble(list_name=vl, choice_options = current_data)) }
-
-df_grouped_choices <- df_grouped_choices %>% 
-  arrange(list_name)
+# # gather choice options based on unique choices list
+# df_unique_choices <- df_choices %>% 
+#   pull(list_name) %>% unique()
+# 
+# df_grouped_choices <- tibble()
+# 
+# for (vl in df_unique_choices) {
+#   current_data <- df_choices %>% 
+#     filter(list_name == vl) %>% pull(name) %>% str_c(collapse = " : ")
+#   df_grouped_choices <- bind_rows(df_grouped_choices, tibble(list_name=vl, choice_options = current_data)) }
+# 
+# df_grouped_choices <- df_grouped_choices %>% 
+  # arrange(list_name)
 
 # Option 2:
-df_grouped_choices_2 <- df_choices %>% 
+df_grouped_choices <- df_choices %>% 
   group_by(list_name) %>% 
   summarise(choice_options = paste(name, collapse = " : "))
 
