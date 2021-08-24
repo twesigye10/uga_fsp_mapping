@@ -72,5 +72,31 @@ analysis_levels <- c("overall", "by_subset_1")
 analysis_level_plots <- list()
 
 for (i in seq_along(analysis_levels)) {
-  
+  analysis_level_plots[[analysis_levels[i]]] <- full_analysis_long %>% 
+    filter(analysis_level %in% analysis_levels, !is.na(variable_val)) %>% 
+    mutate(question_val = paste0(variable, ".", variable_val)) %>% 
+    ggplot(aes(x = question_val, y = `mean/pct`, color = subset_1_val))+
+    geom_point(stat="identity", position = position_dodge(width = 0.3))+
+    geom_errorbar(aes(ymin= `mean/pct_low`, ymax= `mean/pct_upp`), 
+                  width=0.2,position = position_dodge(width = 0.3))+
+    geom_text(aes(x=question_val,y=`mean/pct`, label=n_unweighted), nudge_x = 0.3)+
+    scale_y_continuous(labels = scales::percent,breaks = seq(0,1,by=0.1))+
+    labs(color= "i.region")+
+    ggtitle(label = glue::glue("{analysis_levels[i]} level"))+
+    coord_flip()+
+    theme_bw()+
+    theme(
+      axis.title = element_blank(),
+      legend.title= element_blank()
+    ) 
+  # save the plots
+  ggsave(glue::glue("outputs/graphs/{analysis_levels[i]}_level.pdf"),
+         height = 36,
+         width = 11,
+         units = "in",
+         device = "pdf")
 }
+
+
+
+
