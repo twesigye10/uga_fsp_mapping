@@ -22,7 +22,7 @@ df_choices <- readxl::read_excel("inputs/UGA2103_FSP_Tool_June2021_Final_2021_08
 # get questions with other
 others_colnames <-  df_tool_data %>% 
   select(
-    ends_with("_other")
+    ends_with("_other"), -contains("/")
   ) %>% colnames()
 
 # data.frame for holding _other response data
