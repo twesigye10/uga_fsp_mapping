@@ -30,9 +30,9 @@ df_other_response_data <- data.frame()
 
 for (cln in others_colnames) {
   df_filtered_data <- df_tool_data %>% 
-    select("_uuid", "today", "enumerator_id", current_value = cln) %>% 
-    filter(!is.na(current_value), !current_value %in% c(" ", "NA")) %>% 
-    mutate( name = cln, appropriate_choice = NA)
+    select("_uuid", "today", "enumerator_id", other_text = cln) %>% 
+    filter(!is.na(other_text), !other_text %in% c(" ", "NA")) %>% 
+    mutate( other_name = cln, appropriate_choice = NA)
   df_other_response_data <- rbind(df_other_response_data, df_filtered_data)
 }
 # arrange the data
