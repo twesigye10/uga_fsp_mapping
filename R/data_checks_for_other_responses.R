@@ -29,10 +29,17 @@ others_colnames <-  df_tool_data %>%
 df_other_response_data <- data.frame()
 
 for (cln in others_colnames) {
+  check_val_parent <- str_replace(string = cln, pattern = "_other", replacement = "")
   df_filtered_data <- df_tool_data %>% 
-    select("_uuid", "today", "enumerator_id", other_text = cln) %>% 
+    select(
+      -contains("/")
+    ) %>% 
+    select("_uuid", "today", "enumerator_id", other_text = cln, current_value = check_val_parent) %>% 
     filter(!is.na(other_text), !other_text %in% c(" ", "NA")) %>% 
-    mutate( other_name = cln, appropriate_choice = NA)
+    mutate( other_name = cln, 
+            appropriate_choice = NA,
+            parent_question = check_val_parent
+            )
   df_other_response_data <- rbind(df_other_response_data, df_filtered_data)
 }
 # arrange the data
