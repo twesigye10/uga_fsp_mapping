@@ -37,6 +37,7 @@ for (cln in others_colnames) {
     select("_uuid", "today", "enumerator_id", other_text = cln, current_value = check_val_parent) %>% 
     filter(!is.na(other_text), !other_text %in% c(" ", "NA")) %>% 
     mutate( other_name = cln, 
+            int.my_current_val_extract = ifelse(str_detect(current_value, "other\\b"), str_extract_all(string = current_value, pattern = "other\\b|[a-z]+._other\\b"), current_value),
             appropriate_choice = NA,
             parent_question = check_val_parent
             )
