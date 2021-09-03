@@ -30,7 +30,7 @@ outputs <- list()
 
 # overall analysis
 outputs$over_all_analysis <- butteR::survey_collapse(df = df_svy,
-                                             vars_to_analyze = variables_to_analyse) %>% 
+                                                     vars_to_analyze = variables_to_analyse) %>% 
   mutate(analysis_level = "overall")
 
 # split analysis by subset_1
@@ -98,5 +98,75 @@ for (i in seq_along(analysis_levels)) {
 }
 
 
+# Boxplot for organisation_cash_capability --------------------------------
 
+# organisation_cash_capability 
+# by refugee_settlement 
+# By FSP_type 
+# By region
 
+df_with_composites %>% 
+  filter(!is.na(refugee_settlelement), organisation_cash_capability != 999 ) %>% 
+  ggplot(aes(x = refugee_settlelement , y = organisation_cash_capability ))+
+  geom_boxplot()+
+  theme(
+    legend.position="none",
+    plot.title = element_text(size=11)
+  ) +
+  scale_y_continuous(labels = scales::comma)+
+  labs(
+    title = "organisation cash capability by refugee settlelement",
+    x= "",
+    y= "organisation cash capability"
+  )+
+  theme_bw()+
+  coord_flip()  
+ggsave("outputs/graphs/organisation cash capability by refugee settlelement.pdf",
+       height = 12,
+       width = 9,
+       units = "in",
+       device = "pdf")
+
+df_with_composites %>% 
+  filter(!is.na(organisation_type), organisation_cash_capability != 999 ) %>% 
+  ggplot(aes(x = organisation_type , y = organisation_cash_capability ))+
+  geom_boxplot()+
+  theme(
+    legend.position="none",
+    plot.title = element_text(size=11)
+  ) +
+  scale_y_continuous(labels = scales::comma)+
+  labs(
+    title = "organisation cash capability by organisation type",
+    x= "",
+    y= "organisation cash capability"
+  )+
+  theme_bw()+
+  coord_flip()
+ggsave("outputs/graphs/organisation cash capability by organisation type.pdf",
+       height = 12,
+       width = 9,
+       units = "in",
+       device = "pdf")
+
+df_with_composites %>% 
+  filter(!is.na(i.region), organisation_cash_capability != 999 ) %>% 
+  ggplot(aes(x = i.region , y = organisation_cash_capability ))+
+  geom_boxplot()+
+  theme(
+    legend.position="none",
+    plot.title = element_text(size=11)
+  ) +
+  scale_y_continuous(labels = scales::comma)+
+  labs(
+    title = "organisation cash capability by region",
+    x= "",
+    y= "organisation cash capability"
+  )+
+  theme_bw()+
+  coord_flip()
+ggsave("outputs/graphs/organisation cash capability by region.pdf",
+       height = 12,
+       width = 9,
+       units = "in",
+       device = "pdf")
