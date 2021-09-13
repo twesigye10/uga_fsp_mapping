@@ -77,6 +77,6 @@ kbo_cleaned<- kobold::kobold_cleaner(kbo_modified)
 write_csv(kbo_cleaned$data, file = paste0("outputs/", butteR::date_file_prefix(), "_clean_data.csv"))
 
 
-df_with_composites <- create_composite_indicators_fsp(input_df = kbo_cleaned)
+df_with_composites <- create_composite_indicators_fsp(input_df = kbo_cleaned$data)
 
 write_csv(df_with_composites, file = paste0("outputs/", butteR::date_file_prefix(), "_clean_data_with_composite_indicators.csv"))
