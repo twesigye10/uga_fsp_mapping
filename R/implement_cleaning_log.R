@@ -3,6 +3,8 @@
 library(tidyverse)
 library(lubridate)
 
+source("R/composite_indicators.R")
+
 # read the data
 df_cleaning_log <- readxl::read_excel("inputs/FSP_KII_cleaning_log_final13082021.xlsx") %>% 
   rename(issue_id = Issue, issue = comment) %>% 
@@ -72,4 +74,9 @@ kbo_cleaned<- kobold::kobold_cleaner(kbo_modified)
 
 # write final modified data -----------------------------------------------------
 
-write_csv(kbo_cleaned$data,file = paste0("outputs/", butteR::date_file_prefix(), "_clean_data.csv"))
+write_csv(kbo_cleaned$data, file = paste0("outputs/", butteR::date_file_prefix(), "_clean_data.csv"))
+
+
+df_with_composites <- create_composite_indicators_fsp(input_df = kbo_cleaned)
+
+write_csv(df_with_composites, file = paste0("outputs/", butteR::date_file_prefix(), "_clean_data_with_composite_indicators.csv"))
