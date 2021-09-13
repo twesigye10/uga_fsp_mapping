@@ -10,8 +10,8 @@ df_cleaning_log <- readxl::read_excel("inputs/FSP_KII_cleaning_log_final13082021
   select(uuid, type, name, value, issue_id, sheet, index, relevant, issue)
 df_raw_data <- readxl::read_excel("inputs/UGA2103_FSP_Assessment_Raw_data_aug_final.xlsx") %>% 
   select(-contains("cash_transfer_limitation")) %>% 
-  mutate(fsps_contact_inform = ifelse(fsps_contact_inform == "0", "999", fsps_contact_inform), across(.cols = everything(), .fns = ~ifelse(. == "N/A", "NA", .))) %>% 
-  mutate(across(.cols = where(is.character), .fns = ~ifelse(. == "999", "Do not know", .)))
+  mutate(fsps_contact_inform = ifelse(fsps_contact_inform == "0", "999", fsps_contact_inform), across(.cols = everything(), .fns = ~ifelse(. == "N/A", "NA", .)))
+
 df_survey <- readxl::read_excel("inputs/UGA2103_FSP_Tool_June2021_Final_2021_08_20.xlsx", sheet = "survey") 
 df_choices <- readxl::read_excel("inputs/UGA2103_FSP_Tool_June2021_Final_2021_08_20.xlsx", sheet = "choices") 
 
