@@ -39,7 +39,7 @@ create_composite_indicators_fsp <- function(input_df) {
                                       number_agents >= 101 &  number_agents <= 200 ~ "101_200",
                                       number_agents >= 201 &  number_agents <= 500 ~ "201_500",
                                       number_agents >= 501 &  number_agents <= 998 ~ "500+",
-                                      number_agents == 999 ~ "dk",
+                                      number_agents == 999 ~ "do not know",
                                       number_agents >= 1000  ~ "500+",
                                       TRUE ~ "NA"
       ),
@@ -60,13 +60,13 @@ create_composite_indicators_fsp <- function(input_df) {
                                          yes_operate_presence >= 51 & yes_operate_presence <= 75 ~  "51_75",
                                          yes_operate_presence >= 76 & yes_operate_presence <= 100 ~ "76_100",
                                          yes_operate_presence >= 101 & yes_operate_presence <= 998 ~    "100+",
-                                         yes_operate_presence == 999 ~      "dk",
+                                         yes_operate_presence == 999 ~      "do not know",
                                          yes_operate_presence >= 1000 ~      "100+",
                                          TRUE ~ "NA"
       ),
       i.transfer_value_cat = case_when(large_prog_transfer_value == 0 ~ "0",
                                        large_prog_transfer_value >= 1 & large_prog_transfer_value <= 998 ~   "1_10000000",
-                                       large_prog_transfer_value == 999 ~      "dk",
+                                       large_prog_transfer_value == 999 ~      "do not know",
                                        large_prog_transfer_value >= 1000 & large_prog_transfer_value <= 10000000 ~   "1_10000000",
                                        large_prog_transfer_value >= 10000001 & large_prog_transfer_value <= 20000000 ~  "10000001_20000000",
                                        large_prog_transfer_value >= 20000001 & large_prog_transfer_value <= 50000000 ~  "20000001_50000000",
@@ -87,7 +87,7 @@ create_composite_indicators_fsp <- function(input_df) {
                                         agent_increment_ability_yes >= 51 &  agent_increment_ability_yes <= 75 ~ "51_75",
                                         agent_increment_ability_yes >= 76 &  agent_increment_ability_yes <= 100 ~ "76_100",
                                         agent_increment_ability_yes >= 101 &  agent_increment_ability_yes <= 998 ~ "100+",
-                                        agent_increment_ability_yes == 999 ~ "dk",
+                                        agent_increment_ability_yes == 999 ~ "do not know",
                                         agent_increment_ability_yes >= 1000  ~ "100+",
                                         TRUE ~ "NA"
       )
