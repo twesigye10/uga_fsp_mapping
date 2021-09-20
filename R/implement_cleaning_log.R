@@ -72,7 +72,6 @@ kbo_modified <- kobold::kobold(survey = df_survey %>% filter(name %in% colnames(
                                cleaning = df_cleaning_log )
 kbo_cleaned <- kobold::kobold_cleaner(kbo_modified)
 
-
 # handling added responses after starting data collection -----------------
 
 df_final_cleaned_data <- kbo_cleaned$data %>% 
@@ -82,6 +81,7 @@ df_final_cleaned_data <- kbo_cleaned$data %>%
 
 write_csv(df_final_cleaned_data, file = paste0("outputs/", butteR::date_file_prefix(), "_clean_data.csv"))
 
+# output data with composite indicators
 
 df_with_composites <- create_composite_indicators_fsp(input_df = df_final_cleaned_data)
 
