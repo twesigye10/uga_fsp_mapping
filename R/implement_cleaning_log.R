@@ -70,13 +70,19 @@ kbo_modified <- kobold::kobold(survey = df_survey %>% filter(name %in% colnames(
                                choices = df_choises_modified, 
                                data = df_raw_data_modified, 
                                cleaning = df_cleaning_log )
-kbo_cleaned<- kobold::kobold_cleaner(kbo_modified)
+kbo_cleaned <- kobold::kobold_cleaner(kbo_modified)
+
+
+# handling added responses after starting data collection -----------------
+
+df_final_cleaned_data <- kbo_cleaned$data %>% 
+  mutate(across(.cols = contains("/"), .fns = ~ifelse(is.na(.), FALSE, .)))
 
 # write final modified data -----------------------------------------------------
 
-write_csv(kbo_cleaned$data, file = paste0("outputs/", butteR::date_file_prefix(), "_clean_data.csv"))
+write_csv(df_final_cleaned_data, file = paste0("outputs/", butteR::date_file_prefix(), "_clean_data.csv"))
 
 
-df_with_composites <- create_composite_indicators_fsp(input_df = kbo_cleaned$data)
+df_with_composites <- create_composite_indicators_fsp(input_df = df_final_cleaned_data)
 
 write_csv(df_with_composites, file = paste0("outputs/", butteR::date_file_prefix(), "_clean_data_with_composite_indicators.csv"))
